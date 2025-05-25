@@ -7,8 +7,7 @@ ARG WWWUSER=www-data
 
 RUN apt-get update && apt-get install -y \
     nginx curl zip unzip git supervisor sqlite3 libpng-dev libjpeg-dev libonig-dev libxml2-dev \
-    libzip-dev libpq-dev libfreetype6-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    libzip-dev libpq-dev libjpeg-dev libfreetype6-dev libmcrypt-dev \
     && docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring zip exif pcntl bcmath gd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -17,23 +16,21 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN mkdir -p /var/www/html /var/log/supervisor /tmp/nginx/body /tmp/nginx/proxy /var/log/nginx \
     && chown -R www-data:www-data /tmp/nginx /var/log/nginx
 
-# Configurações do nginx e supervisord
 COPY nginx/default.conf /etc/nginx/sites-available/default
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR /var/www/html
 
-# Copia o app Laravel do contexto (raiz do projeto)
-COPY ../ /var/www/html
+COPY . /var/www/html
 
-# Permissões
-RUN chown -R $WWWUSER:$WWWGROUP /var/www/html \
+# Garante que os diretórios existem antes de aplicar permissões
+RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chown -R $WWWUSER:$WWWGROUP /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Copia script de inicialização
-COPY start.sh /usr/local/bin/start.sh
+COPY docker/start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
 EXPOSE 80
