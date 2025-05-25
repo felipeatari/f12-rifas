@@ -1,12 +1,12 @@
 services:
-  app:
+  f12-rifas:
     build:
       context: .
       dockerfile: Dockerfile
       args:
         WWWGROUP: 1000
-    image: laravel-app-prod
-    container_name: laravel-prod
+    image: ghcr.io/felipeatari/f12-rifa
+    container_name: f12-rifas
     restart: unless-stopped
     environment:
       APP_ENV: production
