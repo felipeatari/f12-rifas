@@ -25,34 +25,72 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        TAG=build-${{ github.run_number }}
-        IMAGE=ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas
-        docker build -t $IMAGE:$TAG -t $IMAGE:latest -f docker/Dockerfile docker/
-        docker push $IMAGE:$TAG
-        docker push $IMAGE:latest
-        echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
+        IMAGE_TAG=build-${{ github.run_number }}
+        IMAGE_NAME=ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas
 
-    - name: Deploy via SSH
+        docker build -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest -f docker/Dockerfile docker/
+        docker push $IMAGE_NAME:$IMAGE_TAG
+        docker push $IMAGE_NAME:latest
+
+        echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+
+    - name: Deploy via SSH with rollback
       uses: appleboy/ssh-action@v0.1.8
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
         script: |
-          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_USER }} --password-stdin
+          set -e
 
-          cd /root/f12-rifas/docker
+          DEPLOY_ENV_FILE="/root/f12-rifas/docker/.env.deploy"
+          IMAGE_NAME="ghcr.io/felipeatari/f12-rifa"
+          IMAGE_TAG="${IMAGE_TAG:-latest}"
 
-          echo "Exportando variáveis e substituindo no docker-compose..."
-          export IMAGE_TAG=${{ env.IMAGE_TAG }}
-          envsubst < docker-compose.yml > docker-compose.generated.yml
+          # Login no GHCR
+          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} --password-stdin
 
-          docker compose -f docker-compose.generated.yml stop f12-rifas
-          docker rm -f f12-rifas
-          docker pull ghcr.io/felipeatari/f12-rifa:$IMAGE_TAG
-          docker compose -f docker-compose.generated.yml up -d f12-rifas
+          # Carregar última tag estável
+          if [ -f "$DEPLOY_ENV_FILE" ]; then
+            source "$DEPLOY_ENV_FILE"
+          else
+            LAST_STABLE_TAG="latest"
+          fi
 
+          echo "Deploy da imagem: $IMAGE_NAME:$IMAGE_TAG"
+          echo "Última imagem estável: $LAST_STABLE_TAG"
+
+          # Pull da nova imagem
+          docker pull $IMAGE_NAME:$IMAGE_TAG
+
+          # Parar e remover container antigo
+          docker compose -f /root/f12-rifas/docker/docker-compose.yml stop f12-rifas || true
+          docker rm -f f12-rifas || true
+
+          # Rodar container novo com tag atual
+          IMAGE_TAG=$IMAGE_TAG docker compose -f /root/f12-rifas/docker/docker-compose.yml up -d f12-rifas
+
+          # Esperar MySQL iniciar
           echo "Aguardando MySQL ficar pronto..."
-          sleep 20
+          sleep 30
 
-          docker exec f12-rifas php artisan migrate --force
+          # Testar e rodar migrations, se falhar, rollback
+          if docker exec f12-rifas php artisan migrate --force; then
+            echo "Migração concluída com sucesso."
+
+            # Atualizar última tag estável
+            echo "LAST_STABLE_TAG=$IMAGE_TAG" > $DEPLOY_ENV_FILE
+          else
+            echo "Erro na migração! Iniciando rollback..."
+
+            # Parar container com problema
+            docker compose -f /root/f12-rifas/docker/docker-compose.yml stop f12-rifas || true
+            docker rm -f f12-rifas || true
+
+            # Rodar container com última imagem estável
+            docker pull $IMAGE_NAME:$LAST_STABLE_TAG
+            IMAGE_TAG=$LAST_STABLE_TAG docker compose -f /root/f12-rifas/docker/docker-compose.yml up -d f12-rifas
+
+            echo "Rollback realizado para a tag $LAST_STABLE_TAG"
+            exit 1
+          fi
