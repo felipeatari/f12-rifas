@@ -12,7 +12,7 @@ services:
       APP_ENV: production
     volumes:
         - ./path/no/host/.env:/var/www/html/.env:ro
-        # - ../:/var/www/html
+        - ../:/var/www/html
     ports:
       - "80:80"
     depends_on:
