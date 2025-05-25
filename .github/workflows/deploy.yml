@@ -40,8 +40,8 @@ jobs:
 
           cd /root/f12-rifas/docker
 
+          docker compose stop f12-rifas
+          docker rm -f f12-rifas
           docker pull ghcr.io/felipeatari/f12-rifas:latest
+          docker compose up -d f12-rifas
 
-          docker compose down
-          docker rm -f f12-rifas || true
-          docker compose up -d
