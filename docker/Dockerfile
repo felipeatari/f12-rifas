@@ -40,4 +40,8 @@ RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
 
 EXPOSE 80
 
-CMD ["/usr/bin/supervisord"]
+# CMD ["/usr/bin/supervisord"]
+
+COPY docker/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+CMD ["/usr/local/bin/start.sh"]

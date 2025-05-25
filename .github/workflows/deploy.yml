@@ -45,4 +45,3 @@ jobs:
           docker compose down
           docker rm -f f12-rifas || true
           docker compose up -d
-          docker exec f12-rifas php artisan migrate --force
