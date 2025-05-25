@@ -29,14 +29,16 @@ jobs:
         docker build -t $IMAGE_NAME -f docker/Dockerfile docker/
         docker push $IMAGE_NAME
 
-    - name: Deploy to VPS via SSH
+    - name: Deploy via SSH
       uses: appleboy/ssh-action@v0.1.8
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
         script: |
-          docker pull ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas:latest
+          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_USER }} --password-stdin
+
+          docker pull ghcr.io/felipeatari/f12-rifas:latest
           docker stop f12-rifas || true
           docker rm f12-rifas || true
-          docker run -d --name f12-rifas -p 80:80 ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas:latest
+          docker run -d --name f12-rifas -p 80:80 ghcr.io/felipeatari/f12-rifas:latest
