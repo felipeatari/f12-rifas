@@ -25,7 +25,7 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        IMAGE_NAME=ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas:latest
+        IMAGE_NAME=ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas
         docker build -t $IMAGE_NAME .
         docker push $IMAGE_NAME
 
@@ -36,7 +36,7 @@ jobs:
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
         script: |
-          docker pull ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas:latest
+          docker pull ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas
           docker stop f12-rifas || true
           docker rm f12-rifas || true
-          docker run -d --name f12-rifas -p 80:80 ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas:latest
+          docker run -d --name f12-rifas -p 80:80 ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas
