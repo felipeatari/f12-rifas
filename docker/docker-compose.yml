@@ -1,17 +1,12 @@
 services:
   f12-rifas:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        WWWGROUP: 1000
     image: ghcr.io/felipeatari/f12-rifas:latest
     container_name: f12-rifas
     restart: unless-stopped
     environment:
       APP_ENV: production
     volumes:
-        - ../:/var/www/html
+      - /root/f12-rifas/.env:/var/www/html/.env:ro
     ports:
       - "80:80"
     depends_on:
