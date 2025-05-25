@@ -39,6 +39,6 @@ jobs:
           echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_USER }} --password-stdin
 
           docker pull ghcr.io/felipeatari/f12-rifas:latest
-          docker stop f12-rifas || true
-          docker rm f12-rifas || true
-          docker run -d --name f12-rifas -p 80:80 ghcr.io/felipeatari/f12-rifas:latest
+
+          docker compose down
+          docker compose up -d
