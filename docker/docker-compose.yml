@@ -1,10 +1,5 @@
 services:
   f12-rifas:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        WWWGROUP: 1000
     image: ghcr.io/felipeatari/f12-rifas:latest
     container_name: f12-rifas
     restart: unless-stopped
