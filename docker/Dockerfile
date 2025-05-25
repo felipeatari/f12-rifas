@@ -29,18 +29,21 @@ RUN chown -R www-data:www-data /tmp/nginx /var/log/nginx
 # Define diretório de trabalho
 WORKDIR /var/www/html
 
-# Copia o projeto para dentro da imagem
-COPY . .
+# Copia apenas os arquivos do composer primeiro (para usar cache de camadas)
+COPY composer.json composer.lock ./
 
 # Instala dependências PHP (somente para produção)
 RUN composer install --no-dev --optimize-autoloader
+
+# Agora copia o restante do projeto
+COPY . .
 
 # Garante que diretórios críticos existem e com permissões corretas
 RUN mkdir -p storage framework/cache framework/sessions framework/views bootstrap/cache \
     && chown -R $WWWUSER:$WWWGROUP storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# Dá permissão para todo o projeto (seguro se usado somente na imagem)
+# Dá permissão para todo o projeto
 RUN chown -R $WWWUSER:$WWWGROUP /var/www/html \
     && chmod -R 755 /var/www/html
 
