@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 LABEL maintainer="F12 Rifas <mr.robot.felipe@gmail.com>"
 
