@@ -38,9 +38,11 @@ jobs:
         script: |
           echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_USER }} --password-stdin
 
+          cd /root/f12-rifas/docker
+
           docker pull ghcr.io/felipeatari/f12-rifas:latest
 
           docker compose down
-          docker rm -f f12-rifas || true  # Garante que o nome esteja liberado
+          docker rm -f f12-rifas || true
           docker compose up -d
           docker exec -it f12-rifas php artisan migrate --force
