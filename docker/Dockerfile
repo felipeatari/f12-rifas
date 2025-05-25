@@ -30,10 +30,10 @@ RUN chown -R www-data:www-data /tmp/nginx /var/log/nginx
 WORKDIR /var/www/html
 
 # Copia apenas os arquivos do composer primeiro (para usar cache de camadas)
-COPY composer.json composer.lock ./
+# COPY composer.json composer.lock ./
 
 # Instala dependências PHP (somente para produção)
-RUN composer install --no-dev --optimize-autoloader
+# RUN composer install --no-dev --optimize-autoloader
 
 # Agora copia o restante do projeto
 COPY . .
