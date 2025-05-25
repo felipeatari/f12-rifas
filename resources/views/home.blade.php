@@ -1,7 +1,7 @@
 <x-layout.app>
     <!-- Hero Section -->
     <section id="inicio" class="text-center py-20">
-        <h1 class="text-4xl font-bold mb-4">Teste CI/CD 31</h1>
+        <h1 class="text-4xl font-bold mb-4">Teste CI/CD 32</h1>
         <h2 class="text-4xl font-bold mb-4">Venda Rifas Online com Controle Total</h2>
         <p class="text-lg mb-6">Cadastre sorteios, gerencie vendas e receba via Pix com segurança.</p>
         <a href="/cadastro" class="bg-gray-900 text-white px-6 py-3 rounded hover:bg-gray-800">Anunciar Sorteio</a>
