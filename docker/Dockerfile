@@ -33,7 +33,7 @@ RUN chown -R $WWWUSER:$WWWGROUP /var/www/html
 WORKDIR /var/www/html
 COPY . /var/www/html
 
-RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
+RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/storage/logs \
     && chown -R $WWWUSER:$WWWGROUP /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
