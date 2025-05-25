@@ -1,6 +1,6 @@
 services:
   f12-rifas:
-    image: ghcr.io/felipeatari/f12-rifa:${IMAGE_TAG:-latest}
+    image: ghcr.io/felipeatari/f12-rifas:${IMAGE_TAG:-latest}
     container_name: f12-rifas
     restart: unless-stopped
     environment:

@@ -44,7 +44,7 @@ jobs:
           set -e
 
           DEPLOY_ENV_FILE="/root/f12-rifas/docker/.env.deploy"
-          IMAGE_NAME="ghcr.io/felipeatari/f12-rifa"
+          IMAGE_NAME="ghcr.io/felipeatari/f12-rifas"
           IMAGE_TAG="${IMAGE_TAG:-latest}"
 
           # Login no GHCR
