@@ -46,7 +46,7 @@ jobs:
           docker compose up -d f12-rifas
 
           echo "Aguardando MySQL ficar pronto..."
-          sleep 60
+          sleep 120
 
-          docker exec -it f12-rifas php artisan migrate --force
+          docker exec f12-rifas php artisan migrate --force
 
