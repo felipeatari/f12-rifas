@@ -43,3 +43,4 @@ jobs:
           docker compose down
           docker rm -f f12-rifas || true  # Garante que o nome esteja liberado
           docker compose up -d
+          docker exec -it f12-rifas php artisan migrate --force
