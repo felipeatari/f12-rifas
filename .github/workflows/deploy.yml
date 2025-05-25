@@ -41,4 +41,5 @@ jobs:
           docker pull ghcr.io/felipeatari/f12-rifas:latest
 
           docker compose down
+          docker rm -f f12-rifas || true  # Garante que o nome esteja liberado
           docker compose up -d
