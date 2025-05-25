@@ -13,26 +13,31 @@ RUN apt-get update && apt-get install -y \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN mkdir -p /var/www/html /var/log/supervisor /tmp/nginx/body /tmp/nginx/proxy /var/log/nginx \
-    && chown -R www-data:www-data /tmp/nginx /var/log/nginx
+RUN mkdir -p /var/www/html /var/log/supervisor
 
 COPY nginx/default.conf /etc/nginx/sites-available/default
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+RUN mkdir -p /tmp/nginx/body /tmp/nginx/proxy /var/log/nginx \
+    && chown -R www-data:www-data /tmp/nginx /var/log/nginx
+
 WORKDIR /var/www/html
 
-# Copia o código do projeto — assumindo que você montará o volume ou copiará no docker-compose
-COPY ../ /var/www/html
+COPY . /var/www/html
+
+# Ajusta dono para www-data e grupo com o argumento
+RUN chown -R $WWWUSER:$WWWGROUP /var/www/html
+
+# Ajusta permissões: storage e bootstrap/cache precisam ser graváveis
+WORKDIR /var/www/html
+COPY . /var/www/html
 
 RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
     && chown -R $WWWUSER:$WWWGROUP /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-COPY start.sh /usr/local/bin/start.sh
-RUN chmod +x /usr/local/bin/start.sh
-
 EXPOSE 80
 
-CMD ["/usr/local/bin/start.sh"]
+CMD ["/usr/bin/supervisord"]
