@@ -25,9 +25,12 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        IMAGE_NAME=ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas:latest
-        docker build -t $IMAGE_NAME -f docker/Dockerfile docker/
-        docker push $IMAGE_NAME
+        TAG=build-${{ github.run_number }}
+        IMAGE=ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas
+        docker build -t $IMAGE:$TAG -t $IMAGE:latest -f docker/Dockerfile docker/
+        docker push $IMAGE:$TAG
+        docker push $IMAGE:latest
+        echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
 
     - name: Deploy via SSH
       uses: appleboy/ssh-action@v0.1.8
@@ -40,13 +43,16 @@ jobs:
 
           cd /root/f12-rifas/docker
 
-          docker compose stop f12-rifas
+          echo "Exportando variáveis e substituindo no docker-compose..."
+          export IMAGE_TAG=${{ env.IMAGE_TAG }}
+          envsubst < docker-compose.yml > docker-compose.generated.yml
+
+          docker compose -f docker-compose.generated.yml stop f12-rifas
           docker rm -f f12-rifas
-          docker pull ghcr.io/felipeatari/f12-rifas:latest
-          docker compose up -d f12-rifas
+          docker pull ghcr.io/felipeatari/f12-rifa:$IMAGE_TAG
+          docker compose -f docker-compose.generated.yml up -d f12-rifas
 
           echo "Aguardando MySQL ficar pronto..."
-          sleep 120
+          sleep 20
 
           docker exec f12-rifas php artisan migrate --force
-
