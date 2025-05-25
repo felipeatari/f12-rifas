@@ -1,0 +1,29 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Number;
+use App\Models\Sortition;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class NumberSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $sortitions = Sortition::all();
+
+        foreach ($sortitions as $sortition) {
+            for ($i = 1; $i <= $sortition->numbers; $i++) {
+                Number::create([
+                    'sortition_id' => $sortition->id,
+                    'number' => $i,
+                    'is_sold' => false
+                ]);
+            }
+        }
+    }
+}
