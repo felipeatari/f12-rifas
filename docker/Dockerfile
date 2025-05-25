@@ -22,15 +22,15 @@ COPY supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR /var/www/html
 
-COPY . /var/www/html
+# Copia o código do projeto — assumindo que você montará o volume ou copiará no docker-compose
+COPY ../ /var/www/html
 
-# Garante que os diretórios existem antes de aplicar permissões
 RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
     && chown -R $WWWUSER:$WWWGROUP /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-COPY docker/start.sh /usr/local/bin/start.sh
+COPY start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
 EXPOSE 80
