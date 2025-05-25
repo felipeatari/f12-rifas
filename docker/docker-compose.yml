@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       args:
         WWWGROUP: 1000
-    image: ghcr.io/felipeatari/f12-rifa
+    image: ghcr.io/felipeatari/f12-rifa:latest
     container_name: f12-rifas
     restart: unless-stopped
     environment:
