@@ -40,10 +40,10 @@ jobs:
 
           cd /root/f12-rifas/docker
 
-          docker compose stop f12-rifas
-          docker rm -f f12-rifas
+          docker compose down --volumes --remove-orphans
+          docker image rm ghcr.io/felipeatari/f12-rifas:latest || true
           docker pull ghcr.io/felipeatari/f12-rifas:latest
-          docker compose up -d f12-rifas
+          docker compose up -d --remove-orphans
 
           echo "Aguardando MySQL ficar pronto..."
           sleep 120
