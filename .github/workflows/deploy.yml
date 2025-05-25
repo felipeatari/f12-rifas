@@ -41,8 +41,8 @@ jobs:
           cd /root/f12-rifas/docker
 
           docker compose down --volumes --remove-orphans
-          docker image rm ghcr.io/felipeatari/f12-rifas:latest || true
-          docker pull ghcr.io/felipeatari/f12-rifas:latest
+          docker image rm $IMAGE_NAME || true
+          docker pull $IMAGE_NAME
           docker compose up -d --remove-orphans
 
           echo "Aguardando MySQL ficar pronto..."
