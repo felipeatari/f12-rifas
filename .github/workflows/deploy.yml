@@ -3,7 +3,7 @@ name: CI/CD Laravel Docker Deploy
 on:
   push:
     branches:
-      - main  # sua branch principal
+      - main
 
 jobs:
   build_and_deploy:
@@ -29,17 +29,14 @@ jobs:
         docker build -t $IMAGE_NAME .
         docker push $IMAGE_NAME
 
-    - name: Setup SSH agent
+    - name: Deploy to VPS via SSH
       uses: appleboy/ssh-action@v0.1.8
       with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
-
-    - name: Deploy to VPS via SSH
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-          cd /path/para/seu/projeto/f12-rifas/docker || exit
-          docker compose down
-          docker compose pull
-          docker compose up -d --build
-          docker exec -it f12-rifas php artisan migrate --force
-        EOF
+        script: |
+          docker pull ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas:latest
+          docker stop f12-rifas || true
+          docker rm f12-rifas || true
+          docker run -d --name f12-rifas -p 80:80 ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas:latest
