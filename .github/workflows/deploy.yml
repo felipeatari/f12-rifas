@@ -45,3 +45,8 @@ jobs:
           docker pull ghcr.io/felipeatari/f12-rifas:latest
           docker compose up -d f12-rifas
 
+          echo "Aguardando MySQL ficar pronto..."
+          sleep 60
+
+          docker exec -it f12-rifas php artisan migrate --force
+
