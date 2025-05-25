@@ -30,7 +30,12 @@ COPY . /var/www/html
 RUN chown -R $WWWUSER:$WWWGROUP /var/www/html
 
 # Ajusta permissões: storage e bootstrap/cache precisam ser graváveis
-RUN chmod -R 755 /var/www/html \
+WORKDIR /var/www/html
+COPY . /var/www/html
+
+RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chown -R $WWWUSER:$WWWGROUP /var/www/html \
+    && chmod -R 755 /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80
