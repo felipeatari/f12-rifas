@@ -41,4 +41,5 @@ jobs:
           docker compose down
           docker compose pull
           docker compose up -d --build
+          docker exec -it f12-rifas php artisan migrate --force
         EOF
