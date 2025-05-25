@@ -10,7 +10,8 @@ services:
     restart: unless-stopped
     environment:
       APP_ENV: production
-    # volumes:
+    volumes:
+        - ./path/no/host/.env:/var/www/html/.env:ro
         # - ../:/var/www/html
     ports:
       - "80:80"

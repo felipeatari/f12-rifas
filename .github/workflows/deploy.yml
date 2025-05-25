@@ -46,7 +46,7 @@ jobs:
           docker compose up -d --remove-orphans
 
           echo "Aguardando MySQL ficar pronto..."
-          sleep 120
+          sleep 30
 
           docker exec f12-rifas php artisan migrate --force
 
