@@ -39,11 +39,10 @@ jobs:
           echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_USER }} --password-stdin
 
           cd /root/f12-rifas/docker
+          git pull origin main
 
           docker compose down --volumes --remove-orphans
-          docker image rm $IMAGE_NAME || true
-          docker pull $IMAGE_NAME
-          docker compose up -d --build
+          docker compose up -d --remove-orphans
 
           echo "Aguardando MySQL ficar pronto..."
           sleep 30
