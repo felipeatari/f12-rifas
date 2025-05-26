@@ -1,6 +1,6 @@
 services:
   f12-rifas:
-    image: ghcr.io/felipeatari/f12-rifas:latest
+    image: ghcr.io/felipeatari/f12-rifas:placeholder
     container_name: f12-rifas
     restart: unless-stopped
     environment:
