@@ -44,7 +44,8 @@ jobs:
           docker compose down --volumes --remove-orphans
           docker compose up -d --remove-orphans
 
-          echo "Aguardando MySQL ficar pronto..."
-          sleep 30
+          until docker exec f12-rifas php -r "try { DB::connection()->getPdo(); echo 'Conectado!'; } catch (\Exception \$e) { echo 'Aguardando MySQL...'; exit(1); }" | grep -q 'Conectado'; do
+            sleep 5
+          done
 
           docker exec f12-rifas php artisan migrate --force
