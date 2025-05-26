@@ -26,16 +26,16 @@ echo "==> 🔒 Colocando app em manutenção..."
 docker exec f12-rifas php artisan down
 
 echo ""
-echo "==> 🛠️ Executando migrations..."
-docker exec f12-rifas php artisan migrate --force
-
-echo ""
 echo "==> 🧼 Limpando caches antigos do Laravel..."
 docker exec f12-rifas php artisan cache:clear
 docker exec f12-rifas php artisan config:clear
 docker exec f12-rifas php artisan route:clear
 docker exec f12-rifas php artisan view:clear
 docker exec f12-rifas php artisan optimize:clear
+
+echo ""
+echo "==> 🛠️ Executando migrations..."
+docker exec f12-rifas php artisan migrate --force
 
 echo ""
 echo "==> 🔧 Recriando caches e otimizando aplicação..."
