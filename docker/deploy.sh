@@ -19,15 +19,18 @@ docker exec f12-rifas npm prune --omit=dev
 
 echo "==> Instala configurações do laravel..."
 docker exec f12-rifas php artisan migrate --force
-docker exec f12-rifas php artisan key:generate
+# docker exec f12-rifas php artisan key:generate
 
-# docker exec -it f12-rifas php artisan route:clear
-# docker exec -it f12-rifas php artisan config:clear
-# docker exec -it f12-rifas php artisan cache:clear
-# docker exec -it f12-rifas php artisan view:clear
-# docker exec -it f12-rifas php artisan optimize:clear
+echo "==> Limpando caches antigos do Laravel..."
+docker exec f12-rifas php artisan route:clear
+docker exec f12-rifas php artisan config:clear
+docker exec f12-rifas php artisan cache:clear
+docker exec f12-rifas php artisan view:clear
+docker exec f12-rifas php artisan optimize:clear
 
-# docker exec -it f12-rifas php artisan config:cache
-# docker exec -it f12-rifas php artisan route:cache
-# docker exec -it f12-rifas php artisan view:cache
-# docker exec -it f12-rifas php artisan optimize
+echo "==> Recriando caches e otimizando aplicação..."
+docker exec f12-rifas php artisan config:cache
+docker exec f12-rifas php artisan route:cache
+docker exec f12-rifas php artisan view:cache
+docker exec f12-rifas php artisan optimize
+
