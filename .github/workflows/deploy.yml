@@ -30,7 +30,7 @@ jobs:
     - name: Build and push Docker image
       run: |
         IMAGE_NAME=ghcr.io/${{ secrets.GHCR_USERNAME }}/f12-rifas:${{ env.IMAGE_TAG }}
-        docker build -t $IMAGE_NAME -f docker/Dockerfile .
+        docker build -t $IMAGE_NAME -f docker/Dockerfile docker/
         docker push $IMAGE_NAME
 
     - name: Deploy via SSH
