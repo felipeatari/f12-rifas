@@ -10,7 +10,7 @@ use App\Http\Controllers\SortitionController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sorteio/{slug}', [SortitionController::class, 'index']);
-Route::get('/acessar', [AccountController::class, 'register'])->name('register');
+Route::get('/acessar', [AccountController::class, 'access'])->name('access');
 
 Route::middleware('guest')->group(function($route) {
     Route::get('/login', [AccountController::class, 'login'])->name('login');
