@@ -6,7 +6,7 @@ git pull origin main
 
 echo ""
 echo "==> 🧹 Limpando containers antigos e preparando ambiente Docker..."
-docker compose down --volumes --remove-orphans
+docker compose down --remove-orphans
 docker compose build --no-cache
 docker image prune --force
 docker compose up -d --remove-orphans
@@ -20,6 +20,10 @@ echo "==> 💻 Instalando dependências JavaScript (npm)..."
 docker exec f12-rifas npm ci
 docker exec f12-rifas npm run build
 docker exec f12-rifas npm prune --omit=dev
+
+echo ""
+echo "==> 🔒 Colocando app em manutenção..."
+docker exec f12-rifas php artisan down
 
 echo ""
 echo "==> 🛠️ Executando migrations..."
@@ -39,6 +43,10 @@ docker exec f12-rifas php artisan config:cache
 docker exec f12-rifas php artisan route:cache
 docker exec f12-rifas php artisan view:cache
 docker exec f12-rifas php artisan optimize
+
+echo ""
+echo "==> 🔓 Tirando app de manutenção..."
+docker exec f12-rifas php artisan up
 
 echo ""
 echo "✅ Deploy finalizado com sucesso!"
