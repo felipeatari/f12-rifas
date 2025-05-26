@@ -5,8 +5,8 @@ git pull origin main
 
 echo "==> Gerencia containers..."
 docker compose down --volumes --remove-orphans
-# docker compose build --no-cache
-# docker image prune --force
+docker compose build --no-cache
+docker image prune --force
 docker compose up -d --remove-orphans
 
 echo "==> Instala dependencias via composer..."
