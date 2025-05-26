@@ -26,7 +26,9 @@ jobs:
           git pull origin main
 
           docker compose down --volumes --remove-orphans
+          docker compose build --no-cache
           docker compose up -d --remove-orphans
+
 
           until docker exec f12-rifas php -r "try { DB::connection()->getPdo(); echo 'Conectado!'; } catch (\Exception \$e) { echo 'Aguardando MySQL...'; exit(1); }" | grep -q 'Conectado'; do
             sleep 5
