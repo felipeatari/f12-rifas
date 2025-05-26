@@ -20,15 +20,5 @@ jobs:
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
         script: |
-          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_USER }} --password-stdin
-
           cd /root/f12-rifas/docker
-          git pull origin main
-
-          docker compose down --volumes --remove-orphans
-          docker compose up -d --remove-orphans
-
-          echo "Aguardando MySQL ficar pronto..."
-          sleep 30
-
-          docker exec f12-rifas php artisan migrate --force
+          ./deploy.sh
