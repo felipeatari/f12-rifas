@@ -10,16 +10,16 @@ docker image prune --force
 docker compose up -d --remove-orphans
 
 echo "==> Instala dependencias via composer..."
-docker exec -it f12-rifas composer install --no-dev --optimize-autoloader
+docker exec f12-rifas composer install --no-dev --optimize-autoloader
 
 echo "==> Instala dependencias via npm..."
-docker exec -it f12-rifas npm ci
-docker exec -it f12-rifas npm run build
-docker exec -it f12-rifas npm prune --omit=dev
+docker exec f12-rifas npm ci
+docker exec f12-rifas npm run build
+docker exec f12-rifas npm prune --omit=dev
 
 echo "==> Instala configurações do laravel..."
-docker exec -it f12-rifas php artisan migrate --force
-docker exec -it f12-rifas php artisan key:generate
+docker exec f12-rifas php artisan migrate --force
+docker exec f12-rifas php artisan key:generate
 
 # docker exec -it f12-rifas php artisan route:clear
 # docker exec -it f12-rifas php artisan config:clear
