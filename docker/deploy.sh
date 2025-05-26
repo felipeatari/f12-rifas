@@ -34,6 +34,13 @@ docker exec f12-rifas php artisan view:clear
 docker exec f12-rifas php artisan optimize:clear
 
 echo ""
+echo "==> ⏳ Aguardando MySQL iniciar..."
+until docker exec mysql-prod mysqladmin ping -h "127.0.0.1" --silent; do
+  sleep 2
+done
+echo "==> ✅ MySQL está pronto."
+
+echo ""
 echo "==> 🛠️ Executando migrations..."
 docker exec f12-rifas php artisan migrate --force
 
