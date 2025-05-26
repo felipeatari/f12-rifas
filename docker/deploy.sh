@@ -15,19 +15,19 @@ docker image prune -a --force
 echo "==> Subindo containers atualizados..."
 docker compose up -d --remove-orphans
 
-# echo "==> Aguardando banco de dados ficar pronto..."
-# sleep 30
-
 echo "==> Instala dependencias via composer..."
-docker exec f12-rifas composer install --no-dev --optimize-autoloader
+docker exec -it f12-rifas composer install --no-dev --optimize-autoloader
 
 echo "==> Instala dependencias via npm..."
-docker exec f12-rifas npm ci --omit=dev
+docker exec -it f12-rifas npm ci
 
 echo "==> Builda dependencias via npm..."
-docker exec f12-rifas npm run build
+docker exec -it f12-rifas npm run build
+
+echo "==> (Opcional) Remove devDependencies após build..."
+docker exec -it f12-rifas npm prune --omit=dev
 
 echo "==> Executando migrations do Laravel..."
-docker exec f12-rifas php artisan migrate --force
+docker exec -it f12-rifas php artisan migrate --force
 
 echo "✅ Deploy finalizado com sucesso!"
