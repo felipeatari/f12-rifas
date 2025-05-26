@@ -15,10 +15,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN mkdir -p /var/www/html /var/log/supervisor
 
-# ⬇️ Corrigindo os caminhos dos arquivos COPY:
-COPY docker/nginx/default.conf /etc/nginx/sites-available/default
-COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY nginx/default.conf /etc/nginx/sites-available/default
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN mkdir -p /tmp/nginx/body /tmp/nginx/proxy /var/log/nginx \
     && chown -R www-data:www-data /tmp/nginx /var/log/nginx
