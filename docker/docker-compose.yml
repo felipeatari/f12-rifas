@@ -5,7 +5,8 @@ services:
     restart: unless-stopped
     environment:
       APP_ENV: production
-    # volumes:
+    volumes:
+        - /root/f12-rifas/.env:/var/www/html/.env:ro
     #     - ../:/var/www/html
     ports:
       - "80:80"
