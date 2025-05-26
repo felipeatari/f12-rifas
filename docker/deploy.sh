@@ -18,8 +18,8 @@ docker exec -it f12-rifas npm run build
 docker exec -it f12-rifas npm prune --omit=dev
 
 echo "==> Instala configurações do laravel..."
-docker exec -it f12-rifas php artisan key:generate
 docker exec -it f12-rifas php artisan migrate --force
+docker exec -it f12-rifas php artisan key:generate
 
 # docker exec -it f12-rifas php artisan route:clear
 # docker exec -it f12-rifas php artisan config:clear
