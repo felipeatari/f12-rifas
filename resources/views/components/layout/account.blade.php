@@ -1,4 +1,3 @@
-<!-- layout_institucional.blade.php -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -9,9 +8,10 @@
     <title>F12 Rifas - Venda Rifas com Segurança e Controle</title>
 </head>
 
-<body class="bg-white text-gray-800">
-    <section class="w-full">
+<body class="bg-[#0a0a0a] text-white">
+    <section class="w-full min-h-screen flex items-center justify-center">
         {{ $slot }}
     </section>
 </body>
+
 </html>

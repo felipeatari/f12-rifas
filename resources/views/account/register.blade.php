@@ -1,36 +1,39 @@
 <x-layout.account>
-<div class="w-full flex flex-col items-center bg-gray-50 mt-10">
-    <div class="w-[300px] flex flex-col items-center justify-between bg-white shadow py-5 px-4">
-        <div class="w-full flex mb-2">
-            <a href="{{ route('home') }}" class="underline">ir para o site</a>
-        </div>
+    <div class="min-h-screen flex items-center justify-center px-4">
+        <div class="w-full max-w-sm bg-[#111111] text-white rounded-lg p-6 shadow-md">
+            <a href="{{ route('home') }}" class="text-sm text-yellow-400 hover:underline mb-4 inline-block">← Voltar para o site</a>
 
-        {{-- <img class="w-[100px] mb-5" src="/assets/images/logo3.png" alt=""> --}}
+            <h1 class="text-xl text-center font-semibold mt-4 mb-8">Criar sua conta</h1>
 
-        <form class="my-2" wire:submit.prevent="store">
             @if ($errors->any())
-            <div class="w-full mb-2">
-                @foreach ($errors->all() as $error)
-                <span class="w-full flex flex-col bg-red-100 text-red-600 px-2 py-1 my-1 text-sm">{{ $error }}</span>
-                @endforeach
-            </div>
+                <div class="bg-red-100 border border-red-300 text-red-700 text-sm p-2 mb-4 rounded">
+                    @foreach ($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
             @endif
 
-            <div class="w-full flex my-1">
-                <input wire:model="firstName" class="w-full mr-1 px-3 py-2 text-sm border rounded-md" placeholder="Nome" type="text">
-                <input wire:model="lastName" class="w-full ml-1 px-3 py-2 text-sm border rounded-md" placeholder="Sobrenome" type="text">
-            </div>
+            <form>
+                <div class="flex gap-2 mb-3">
+                    <input name="firstName" type="text" class="w-1/2  p-2 mb-3 text-white border border-[#363333] rounded" placeholder="Nome">
+                    <input name="lastName" type="text" class="w-1/2  p-2 mb-3 text-white border border-[#363333] rounded" placeholder="Sobrenome">
+                </div>
 
-            <input wire:model="login" class="w-full px-3 py-2 my-1 text-sm border rounded-md" placeholder="WhatsApp" type="text">
+                <input name="login" type="text" class="w-full p-2 mb-3 text-white border border-[#363333] rounded" placeholder="WhatsApp">
 
-            <input wire:model="password" class="w-full px-3 py-2 my-1 text-sm border rounded-md" placeholder="Senha" type="password">
+                <input name="password" type="password" class="w-full p-2 mb-3 text-white border border-[#363333] rounded" placeholder="Senha">
 
-            <input wire:model="confirmPassword" class="w-full px-3 py-2 my-1 text-sm border rounded-md" placeholder="Confirmar Senha" type="password">
+                <input name="confirmPassword" type="password" class="w-full p-2 mb-3 text-white border border-[#363333] rounded" placeholder="Confirmar Senha">
 
-            <button wire:click="store" class="w-full px-3 py-2 my-1 text-sm border rounded-md font-semibold bg-gray-700 hover:bg-gray-800 text-white">Cadastrar</button>
-        </form>
+                <button wire:click="store" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black text-sm font-semibold py-2 rounded-md transition duration-200">
+                    Cadastrar
+                </button>
+            </form>
 
-        <span class="text-sm mt-6">Já tem uma conta? <a wire:navigate href="{{ route('login') }}" class="underline text-blue-900">Acesse aqui</a></span>
+            <p class="text-sm text-center mt-6">
+                Já tem uma conta?
+                <a href="{{ route('login') }}" class="text-yellow-400 underline">Acesse aqui</a>
+            </p>
+        </div>
     </div>
-</div>
 </x-layout.account>
