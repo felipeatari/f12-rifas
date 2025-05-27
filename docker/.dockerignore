@@ -1,0 +1,20 @@
+# Ignorar dependências locais
+vendor/
+node_modules/
+
+# Ignorar arquivos do Git
+.git/
+
+# Ignorar arquivos temporários e logs
+*.log
+*.cache
+*.tmp
+
+# Ignorar arquivos de configuração local sensível
+.env
+
+# Ignorar pasta de storage local (cache, uploads temporários)
+storage/
+
+# Ignorar arquivos de build que não são necessários na imagem
+docker-compose.yml
