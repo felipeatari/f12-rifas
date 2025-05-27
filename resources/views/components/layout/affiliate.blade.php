@@ -1,37 +1,81 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Afiliado</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.add('hidden');
+        }
+    </script>
 </head>
-<body class="bg-[#0d0d0d] text-white min-h-screen flex flex-col font-sans">
-    <!-- Header / Navigation -->
-    <header class="w-full bg-[#1a1a1a] shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold text-yellow-400">
-                Painel do Afiliado
+
+<body class="bg-[#111111] text-white scroll-smooth">
+    <!-- Header -->
+    <header class="bg-[#0a0a0a] w-full border-b border-yellow-500 py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Desktop -->
+            <div class="hidden md:flex justify-between items-center h-16">
+                <!-- Nome -->
+                <div class="text-2xl font-bold text-yellow-400">
+                    Olá, {{ Auth::user()->name }}
+                </div>
+
+                <!-- Navegação -->
+                <nav class="space-x-6 text-white font-medium">
+                    <a href="{{ route('affiliate') }}" class="hover:text-yellow-400">Sorteios</a>
+                    <a href="{{ route('affiliate') }}" class="hover:text-yellow-400">Vendas</a>
+                    <a href="{{ route('affiliate') }}" class="hover:text-yellow-400">Configurações</a>
+                </nav>
+
+                <!-- Botão sair -->
+                <a href="{{ route('logout') }}" class="bg-yellow-600 hover:bg-yellow-700 text-black font-semibold py-2 px-4 rounded-lg transition">Sair</a>
             </div>
-            <nav class="flex items-center gap-4">
-                <a href="{{ route('affiliate') }}" class="text-yellow-400 hover:text-yellow-300 transition">
-                    Meus Sorteios
-                </a>
-                <a href="{{ route('logout') }}" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-300 transition font-semibold">
-                    Sair
-                </a>
-            </nav>
+
+            <!-- Mobile -->
+            <div class="md:hidden py-4 relative">
+                <div class="text-center text-xl font-bold text-yellow-400">
+                    Olá, {{ Auth::user()->name }}
+                </div>
+
+                <div class="flex justify-center mt-4 gap-4">
+                    <button onclick="toggleMobileMenu()" class="text-white border border-yellow-500 rounded-lg px-4 py-2">Menu</button>
+                    <a href="{{ route('logout') }}" class="bg-yellow-600 hover:bg-yellow-700 text-black font-semibold py-2 px-4 rounded-lg transition">Sair</a>
+                </div>
+
+                <!-- Menu Mobile -->
+                <div id="mobileMenu" class="hidden fixed inset-0 bg-[#0a0a0a] z-40 flex flex-col items-center justify-center space-y-6 text-xl">
+                    <a href="{{ route('affiliate') }}" onclick="closeMobileMenu()" class="hover:text-yellow-400">Sorteios</a>
+                    <a href="{{ route('affiliate') }}" onclick="closeMobileMenu()" class="hover:text-yellow-400">Vendas</a>
+                    <a href="{{ route('affiliate') }}" onclick="closeMobileMenu()" class="hover:text-yellow-400">Configurações</a>
+                    <button onclick="closeMobileMenu()" class="mt-6 text-gray-400 text-sm underline">Fechar</button>
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- Conteúdo principal -->
+        <!-- Conteúdo principal -->
     <main class="flex-1 w-full max-w-7xl mx-auto px-4 py-6">
         {{ $slot }}
     </main>
 
-    <!-- Rodapé -->
-    <footer class="w-full bg-[#1a1a1a] text-center text-sm py-4 mt-6 text-gray-400">
-        &copy; {{ date('Y') }} Plataforma de Rifas. Todos os direitos reservados.
+     <!-- Footer -->
+    <footer class="bg-[#1a1a1a] text-white py-10 text-center text-sm bottom-0">
+        <div class="max-w-5xl mx-auto">
+            <p>&copy; 2025 F12 Rifas. Todos os direitos reservados.</p>
+            <div class="mt-4">
+                <a href="/termos" class="underline mr-4">Termos de Uso</a>
+                <a href="/privacidade" class="underline">Política de Privacidade</a>
+            </div>
+        </div>
     </footer>
 </body>
 </html>
