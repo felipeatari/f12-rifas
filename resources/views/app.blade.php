@@ -177,23 +177,28 @@
     </section>
 
     @if (app()->environment('production'))
+        <style>
+            .swal2-icon.swal2-info {
+                border-color: #facc15 !important;
+                /* Borda do círculo */
+                color: #facc15 !important;
+                /* Cor do ícone (i) */
+            }
+        </style>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                if (!localStorage.getItem('devNoticeAccepted')) {
-                    Swal.fire({
-                        title: 'Em desenvolvimento',
-                        text: 'Este site ainda está em desenvolvimento. Algumas funcionalidades podem não estar disponíveis.',
-                        icon: 'info',
-                        confirmButtonText: 'Entendi',
-                        customClass: {
-                            confirmButton: 'bg-yellow-500 hover:bg-yellow-600 text-black hover:bg-gray-900 focus:outline-none px-4 py-2 rounded'
-                        },
-                        background: '#1a1a1a',
-                        color: '#fff'
-                    }).then(() => {
-                        localStorage.setItem('devNoticeAccepted', 'true');
-                    });
-                }
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Em desenvolvimento',
+                    text: 'Este site ainda está em desenvolvimento. Algumas funcionalidades podem não estar disponíveis.',
+                    icon: 'info',
+                    confirmButtonText: 'Entendi',
+                    background: '#1a1a1a',
+                    color: '#fff',
+                    customClass: {
+                        confirmButton: 'bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-4 py-2 rounded focus:outline-none'
+                    },
+                    buttonsStyling: false
+                });
             });
         </script>
     @endif
