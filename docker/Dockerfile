@@ -30,9 +30,9 @@ RUN mkdir -p /tmp/nginx/body /tmp/nginx/proxy /var/log/nginx \
 
 WORKDIR /var/www/html
 
-COPY . /var/www/html
+# COPY . /var/www/html
 
-RUN chown -R $WWWUSER:$WWWGROUP /var/www/html
+# RUN chown -R $WWWUSER:$WWWGROUP /var/www/html
 
 RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
     && chown -R $WWWUSER:$WWWGROUP /var/www/html \
