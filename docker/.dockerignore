@@ -15,6 +15,3 @@ node_modules/
 
 # Ignorar pasta de storage local (cache, uploads temporários)
 storage/
-
-# Ignorar arquivos de build que não são necessários na imagem
-docker-compose.yml
