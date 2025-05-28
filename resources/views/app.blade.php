@@ -186,7 +186,7 @@
                     confirmButtonText: 'Entendi',
                     confirmButtonColor: '#facc15', // amarelo
                     background: '#1a1a1a',
-                    color: '#fff'
+                    color: '#070606'
                 });
             });
         </script>
