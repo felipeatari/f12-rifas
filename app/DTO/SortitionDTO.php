@@ -7,6 +7,7 @@ use App\Models\Sortition;
 class SortitionDTO
 {
     public ?int $id;
+    public ?int $user_id;
     public ?string $title;
     public ?string $description;
     public ?string $slug;
@@ -19,6 +20,7 @@ class SortitionDTO
     public function __construct(Sortition $data)
     {
         $this->id = $data['id'];
+        $this->user_id = $data['user_id'];
         $this->title = $data['title'];
         $this->description = $data['description'];
         $this->slug = $data['slug'];
@@ -33,6 +35,7 @@ class SortitionDTO
     {
         return [
             'id' => $this->id,
+            'user_id' => $this->user_id,
             'title' => $this->title,
             'description' => $this->description,
             'slug' => $this->slug,

@@ -27,8 +27,8 @@ class VerifyTypeUser
 
         return match (true) {
             $user->type === 'admin' && $route !== 'admin' => redirect()->route('admin'),
-            $user->type === 'affiliate' && $route !== 'affiliate' => redirect()->route('affiliate'),
-            $user->type === 'client' && $route !== 'client' => redirect()->route('client'),
+            $user->type === 'affiliate.index' && $route !== 'affiliate.index' => redirect()->route('affiliate.index'),
+            // $user->type === 'client' && $route !== 'client' => redirect()->route('client'),
             default => $next($request),
         };
     }

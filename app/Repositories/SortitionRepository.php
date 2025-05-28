@@ -5,10 +5,11 @@ namespace App\Repositories;
 use App\Models\Sortition;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 class SortitionRepository
 {
-    private array $allowed = ['id', 'title', 'date', 'status'];
+    private array $allowed = ['id', 'title', 'slug', 'date', 'status'];
 
     public function applyFilters($query, array $filters = [])
     {
@@ -25,13 +26,14 @@ class SortitionRepository
 
             match ($key) {
                 'title' => $query->where('title', 'like', "%$value%"),
+                'slug' => $query->where('slug', 'like', "%$value%"),
                 'date' => $query->whereDate('date', $value),
                 'status' => $query->where('status', $value),
                 default => $query->where($key, $value),
             };
         endforeach;
 
-        return $query;
+        return $query->orderByDesc('id');
     }
 
     public function getAll(array $filters = [], $perPage = 10, $columns = [])
@@ -54,17 +56,20 @@ class SortitionRepository
         }
     }
 
-    public function getOne(array $filters = [], $perPage = 10)
+    public function getOne(array $filters = [], $perPage = 10, $columns = [])
     {
         try {
             $query = Sortition::query();
             $query = $this->applyFilters($query, $filters, $this->allowed);
 
+            if (! $columns) $columns = ['*'];
+
+            $query->select($columns);
+
             $data = $query->first();
 
             return $data;
         } catch (Exception $exception) {
-            Log::error($exception->getMessage());
 
             throw $exception;
         }

@@ -24,17 +24,24 @@ Route::group(['middleware' => 'auth'], function () {
 
         return match ($user->type) {
             'admin'     => redirect()->route('admin'),
-            'affiliate' => redirect()->route('affiliate'),
-            'client'    => redirect()->route('client'),
+            'affiliate' => redirect()->route('affiliate.index'),
+            // 'client'    => redirect()->route('client'),
             default     => abort(403),
         };
     })->name('painel');
 
     Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
 
-    Route::get('/afiliado', [AffiliateController::class, 'index'])->name('affiliate')->middleware(VerifyTypeUser::class);
+    Route::prefix('afiliado')->name('affiliate.')->middleware(VerifyTypeUser::class)->group(function() {
+        Route::get('/', [AffiliateController::class, 'index'])->name('index');
+        Route::get('/cadastrar-sorteio', [AffiliateController::class, 'create'])->name('create');
+        Route::post('/cadastrar-sorteio', [AffiliateController::class, 'store'])->name('store');
+        Route::get('/editar-sorteio/{id}', [AffiliateController::class, 'edit'])->name('edit');
+        Route::put('/editar-sorteio/{id}', [AffiliateController::class, 'update'])->name('update');
+        Route::get('/vendas', [AffiliateController::class, 'sellers'])->name('sellers');
+    });
 
-    Route::get('/cliente', function() {
-        dd('Cliente');
-    })->name('client')->middleware(VerifyTypeUser::class);
+    // Route::get('/cliente', function() {
+    //     dd('Cliente');
+    // })->name('client')->middleware(VerifyTypeUser::class);
 });
