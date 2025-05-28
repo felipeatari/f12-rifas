@@ -45,15 +45,15 @@ echo "==> 🛠️ Executando migrations..."
 docker exec f12-rifas php artisan migrate --force
 
 echo ""
-echo "==> 🔗 Criando link simbólico do storage..."
-docker exec f12-rifas php artisan storage:link
-
-echo ""
 echo "==> 🔧 Recriando caches e otimizando aplicação..."
 docker exec f12-rifas php artisan config:cache
 docker exec f12-rifas php artisan route:cache
 docker exec f12-rifas php artisan view:cache
 docker exec f12-rifas php artisan optimize
+
+echo ""
+echo "==> 🔗 Criando link simbólico do storage..."
+docker exec f12-rifas php artisan storage:link
 
 echo ""
 echo "==> 🔓 Tirando app de manutenção..."
