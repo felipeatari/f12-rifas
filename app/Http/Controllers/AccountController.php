@@ -34,13 +34,12 @@ class AccountController extends Controller
         $user = Auth::user();
         $route = Route::currentRouteName();
 
-        if ($user->type === 'admin' and $route !== 'admin') {
-            return redirect()->route('admin');
-        } elseif ($user->type === 'affiliate' and $route !== 'affiliate') {
-            return redirect()->route('affiliate');
-        } elseif ($user->type === 'client' and $route !== 'client') {
-            return redirect()->route('client');
-        }
+        return match ($user->type) {
+            'admin'     => redirect()->route('admin'),
+            'affiliate' => redirect()->route('affiliate.index'),
+            // 'client'    => redirect()->route('client'),
+            default     => abort(403),
+        };
     }
 
     public function logout(Request $request)
