@@ -178,16 +178,22 @@
 
     @if (app()->environment('production'))
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    title: 'Em desenvolvimento',
-                    text: 'Este site ainda está em desenvolvimento. Algumas funcionalidades podem não estar disponíveis.',
-                    icon: 'info',
-                    confirmButtonText: 'Entendi',
-                    confirmButtonColor: '#facc15', // amarelo
-                    background: '#1a1a1a',
-                    color: '#070606'
-                });
+            document.addEventListener('DOMContentLoaded', function () {
+                if (!localStorage.getItem('devNoticeAccepted')) {
+                    Swal.fire({
+                        title: 'Em desenvolvimento',
+                        text: 'Este site ainda está em desenvolvimento. Algumas funcionalidades podem não estar disponíveis.',
+                        icon: 'info',
+                        confirmButtonText: 'Entendi',
+                        customClass: {
+                            confirmButton: 'bg-yellow-500 hover:bg-yellow-600 text-black hover:bg-gray-900 focus:outline-none px-4 py-2 rounded'
+                        },
+                        background: '#1a1a1a',
+                        color: '#fff'
+                    }).then(() => {
+                        localStorage.setItem('devNoticeAccepted', 'true');
+                    });
+                }
             });
         </script>
     @endif
