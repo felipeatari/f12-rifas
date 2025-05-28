@@ -5,7 +5,7 @@ services:
             dockerfile: Dockerfile
             args:
                 WWWGROUP: 1000
-        image: php:8.4-fpm
+        # image: php:8.4-fpm
         container_name: f12-rifas
         restart: unless-stopped
         environment:

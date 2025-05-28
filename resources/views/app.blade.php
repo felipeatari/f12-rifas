@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>F12 Rifas</title>
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
@@ -35,9 +35,12 @@
 
                 <!-- Botão Conta -->
                 @if (Auth::check())
-                    <a href="{{ route('painel') }}" class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition">Minha Conta</a>
+                    <a href="{{ route('painel') }}"
+                        class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition">Minha
+                        Conta</a>
                 @else
-                    <a href="{{ route('login') }}" class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition">Acessar</a>
+                    <a href="{{ route('login') }}"
+                        class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition">Acessar</a>
                 @endif
             </div>
 
@@ -45,14 +48,19 @@
             <div class="md:hidden py-4 relative">
                 <div class="text-center text-2xl font-bold text-yellow-400">F12 Rifas</div>
                 <div class="flex justify-center mt-4 gap-4">
-                    <button onclick="toggleMobileMenu()" class="text-white border border-yellow-500 rounded-lg px-4 py-2">Menu</button>
+                    <button onclick="toggleMobileMenu()"
+                        class="text-white border border-yellow-500 rounded-lg px-4 py-2">Menu</button>
                     @if (Auth::check())
-                        <a href="{{ route('painel') }}" class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition">Minha Conta</a>
+                        <a href="{{ route('painel') }}"
+                            class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition">Minha
+                            Conta</a>
                     @else
-                        <a href="{{ route('login') }}" class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition">Acessar</a>
+                        <a href="{{ route('login') }}"
+                            class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition">Acessar</a>
                     @endif
                 </div>
-                <div id="mobileMenu" class="hidden fixed inset-0 bg-[#0a0a0a] z-40 flex flex-col items-center justify-center space-y-6 text-xl">
+                <div id="mobileMenu"
+                    class="hidden fixed inset-0 bg-[#0a0a0a] z-40 flex flex-col items-center justify-center space-y-6 text-xl">
                     <a href="#home" onclick="closeMobileMenu()" class="hover:text-yellow-400">Início</a>
                     <a href="#como-funciona" onclick="closeMobileMenu()" class="hover:text-yellow-400">Como Funciona</a>
                     <a href="#porque-usar" onclick="closeMobileMenu()" class="hover:text-yellow-400">Por que Usar</a>
@@ -73,7 +81,8 @@
         </div>
 
         <div class="w-full flex justify-center mt-10">
-            <a href="{{ route('register') }}" class="w-[250px] md:w-[400px] bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg text-lg transition my-8">Cadastre-se</a>
+            <a href="{{ route('register') }}"
+                class="w-[250px] md:w-[400px] bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg text-lg transition my-8">Cadastre-se</a>
         </div>
     </section>
 
@@ -83,15 +92,18 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div class="bg-[#070606] p-6 rounded-lg border border-yellow-500">
                 <p class="text-xl font-bold mb-2">1 - Crie a sua conta</p>
-                <p class="text-gray-300">Cadastre-se gratuitamente com seu WhatsApp e em poucos cliques. É rápido, simples e sem burocracia.</p>
+                <p class="text-gray-300">Cadastre-se gratuitamente com seu WhatsApp e em poucos cliques. É rápido,
+                    simples e sem burocracia.</p>
             </div>
             <div class="bg-[#070606] p-6 rounded-lg border border-yellow-500">
                 <p class="text-xl font-bold mb-2">2 - Configure sua campanha</p>
-                <p class="text-gray-300">Acesse o painel completo para criar e gerenciar sua campanha. Adicione título, descrição, valor e total de participantes.</p>
+                <p class="text-gray-300">Acesse o painel completo para criar e gerenciar sua campanha. Adicione título,
+                    descrição, valor e total de participantes.</p>
             </div>
             <div class="bg-[#070606] p-6 rounded-lg border border-yellow-500">
                 <p class="text-xl font-bold mb-2">3 - Publique e arrecade!</p>
-                <p class="text-gray-300">Finalize sua campanha e comece a arrecadar. Os valores vão direto para a sua conta via Pix.</p>
+                <p class="text-gray-300">Finalize sua campanha e comece a arrecadar. Os valores vão direto para a sua
+                    conta via Pix.</p>
             </div>
         </div>
 
@@ -109,57 +121,76 @@
 
     <!-- Por que usar -->
     <section id="porque-usar" class="bg-[#111111] py-16 px-4">
-    <div class="max-w-4xl mx-auto">
-        <h2 class="text-3xl font-bold text-yellow-400 text-center mb-12">Por que usar o F12 Rifas?</h2>
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-yellow-400 text-center mb-12">Por que usar o F12 Rifas?</h2>
 
-        <div class="space-y-12">
-            <!-- Item 1 -->
-            <div class="flex flex-col md:flex-row md:items-start md:gap-6">
-                <div class="text-4xl font-bold text-yellow-500 mb-2 md:mb-0 md:w-12">01</div>
-                <div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Gestão simples e eficiente das rifas</h3>
-                    <p class="text-gray-300">
-                        Com o F12 Rifas, você tem controle total sobre os números vendidos, status dos pagamentos e gerenciamento completo da sua campanha de forma intuitiva e prática.
-                    </p>
+            <div class="space-y-12">
+                <!-- Item 1 -->
+                <div class="flex flex-col md:flex-row md:items-start md:gap-6">
+                    <div class="text-4xl font-bold text-yellow-500 mb-2 md:mb-0 md:w-12">01</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Gestão simples e eficiente das rifas</h3>
+                        <p class="text-gray-300">
+                            Com o F12 Rifas, você tem controle total sobre os números vendidos, status dos pagamentos e
+                            gerenciamento completo da sua campanha de forma intuitiva e prática.
+                        </p>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Item 2 -->
-            <div class="flex flex-col md:flex-row md:items-start md:gap-6">
-                <div class="text-4xl font-bold text-yellow-500 mb-2 md:mb-0 md:w-12">02</div>
-                <div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Receba direto na conta via Pix</h3>
-                    <p class="text-gray-300">
-                        As contribuições dos participantes são repassadas automaticamente para sua conta bancária via Pix. Sem burocracia ou atrasos.
-                    </p>
+                <!-- Item 2 -->
+                <div class="flex flex-col md:flex-row md:items-start md:gap-6">
+                    <div class="text-4xl font-bold text-yellow-500 mb-2 md:mb-0 md:w-12">02</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Receba direto na conta via Pix</h3>
+                        <p class="text-gray-300">
+                            As contribuições dos participantes são repassadas automaticamente para sua conta bancária
+                            via Pix. Sem burocracia ou atrasos.
+                        </p>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Item 3 -->
-            <div class="flex flex-col md:flex-row md:items-start md:gap-6">
-                <div class="text-4xl font-bold text-yellow-500 mb-2 md:mb-0 md:w-12">03</div>
-                <div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Sorteios auditáveis e seguros</h3>
-                    <p class="text-gray-300">
-                        O sistema gera sorteios automatizados com total transparência, garantindo a confiança dos participantes com resultados auditáveis.
-                    </p>
+                <!-- Item 3 -->
+                <div class="flex flex-col md:flex-row md:items-start md:gap-6">
+                    <div class="text-4xl font-bold text-yellow-500 mb-2 md:mb-0 md:w-12">03</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Sorteios auditáveis e seguros</h3>
+                        <p class="text-gray-300">
+                            O sistema gera sorteios automatizados com total transparência, garantindo a confiança dos
+                            participantes com resultados auditáveis.
+                        </p>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Item 4 -->
-            <div class="flex flex-col md:flex-row md:items-start md:gap-6">
-                <div class="text-4xl font-bold text-yellow-500 mb-2 md:mb-0 md:w-12">04</div>
-                <div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Cadastro rápido e suporte</h3>
-                    <p class="text-gray-300">
-                        Comece em poucos minutos com cadastro pelo WhatsApp e tenha suporte técnico disponível para tirar dúvidas e resolver qualquer questão.
-                    </p>
+                <!-- Item 4 -->
+                <div class="flex flex-col md:flex-row md:items-start md:gap-6">
+                    <div class="text-4xl font-bold text-yellow-500 mb-2 md:mb-0 md:w-12">04</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Cadastro rápido e suporte</h3>
+                        <p class="text-gray-300">
+                            Comece em poucos minutos com cadastro pelo WhatsApp e tenha suporte técnico disponível para
+                            tirar dúvidas e resolver qualquer questão.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
+    @if (app()->environment('production'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Em desenvolvimento',
+                    text: 'Este site ainda está em desenvolvimento. Algumas funcionalidades podem não estar disponíveis.',
+                    icon: 'info',
+                    confirmButtonText: 'Entendi',
+                    confirmButtonColor: '#facc15', // amarelo
+                    background: '#1a1a1a',
+                    color: '#fff'
+                });
+            });
+        </script>
+    @endif
 
     <!-- Footer -->
     <footer class="bg-[#1a1a1a] text-white py-10 text-center text-sm">
