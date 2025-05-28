@@ -23,8 +23,8 @@ class SortitionRequest extends FormRequest
     {
         return [
             'user_id' => 'nullable|integer|min:0',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'title' => 'required|string|max:100',
+            'description' => 'required|string|max:1000',
             'price' => 'required|numeric|min:0.01|max:99999999.99',
             'numbers' => 'required|integer|min:0',
             'date' => 'required|string|max:255',
@@ -36,7 +36,9 @@ class SortitionRequest extends FormRequest
     {
         return [
             'title.required' => 'Campo "Título" obrigatório.',
+            'title.max' => 'O "Título" não pode ter mais de 300 caracteres.',
             'description.required' => 'Campo "Descrição" obrigatório.',
+            'description.max' => 'O "Título" não pode ter mais de 1.000 caracteres.',
             'price.required' => 'Campo "Preço" obrigatório.',
             'price.numeric' => 'Valor do "Preço" inválido. Verfique e tente novamente.',
             'numbers.required' => 'Campo "Números" obrigatório.',

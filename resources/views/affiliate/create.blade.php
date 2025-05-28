@@ -39,7 +39,7 @@
             </div>
 
             <label class="text-sm" for="description">Descrição</label>
-            <textarea name="description" id="description" class="w-full h-[200px] p-2 mb-3 text-white border border-[#363333] rounded"
+            <textarea name="description" id="description" class="w-full h-[100px] p-2 mb-3 text-white border border-[#363333] rounded"
                 placeholder="Descrição do sorteio">{{ old('description') }}</textarea>
 
             <div class="flex gap-2 mt-4">
