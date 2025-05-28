@@ -27,8 +27,8 @@ services:
     container_name: mysql-prod
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: laravel
+      MYSQL_DATABASE: f12-rifas
+      MYSQL_USER: secret
       MYSQL_PASSWORD: secret
       MYSQL_ROOT_PASSWORD: root
     volumes:
