@@ -28,7 +28,7 @@ class SortitionRequest extends FormRequest
             'price' => 'required|numeric|min:0.01|max:99999999.99',
             'numbers' => 'required|integer|min:0',
             'date' => 'required|string|max:255',
-            'image' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:5120', // Até 2MB
+            'image' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:5120', // Até 5MB
         ];
     }
 
@@ -45,7 +45,7 @@ class SortitionRequest extends FormRequest
             'date.required' => 'Campo "Data" obrigatório.',
             'image.required' => 'Campo "Imagem" obrigatório.',
             'image.file' => 'Arquivo inválido',
-            'image.mimes' => 'Arquivo inválido. Permitidos: jpg,png ou webp.',
+            'image.mimes' => 'Arquivo inválido. Permitidos: jpg,jpeg,png ou webp.',
             'image.max' => 'Arquivo deve ser igual ou inferior a 5MB.',
         ];
     }

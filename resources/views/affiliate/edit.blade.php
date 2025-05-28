@@ -1,8 +1,16 @@
 <x-layout.affiliate>
-    <div class="w-full h-screen flex flex-col items-center my-10">
+    <div class="w-full flex flex-col items-center my-10">
         <h1 class="text-xl text-center font-semibold mb-10">Editar Campanha</h1>
 
-        <form class="max-w-[600px]" method="POST" action="{{ route('affiliate.update', $sortition->id) }}">
+        <div class="h-[200px] mt-10 mb-20 flex items-center justify-center bg-gray-50 border border-dashed border-gray-300 rounded">
+            @if ($sortition->image)
+                <img src="{{ $sortition->image }}" alt="Imagem do sorteio" class="max-w-[300px] h-auto" />
+            @else
+                <span class="text-sm text-gray-400">Sem imagem</span>
+            @endif
+        </div>
+
+        <form class="max-w-[600px]" method="POST" action="{{ route('affiliate.update', $sortition->id) }}" enctype="multipart/form-data">
             @csrf
             @method('put')
 
@@ -43,7 +51,7 @@
             </div>
 
             <label class="text-sm" for="description">Descrição</label>
-            <textarea name="description" id="description" class="w-full h-[100px] p-2 mb-3 text-white border border-[#363333] rounded"
+            <textarea name="description" id="description" class="w-full h-[150px] p-2 mb-3 text-white border border-[#363333] rounded"
                 placeholder="Descrição do sorteio">{{ old('description', $sortition->description) }}</textarea>
 
             <div class="flex gap-2 mt-4">

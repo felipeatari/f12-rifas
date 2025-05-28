@@ -1,8 +1,8 @@
 <x-layout.affiliate>
-    <div class="w-full h-screen flex flex-col items-center my-10">
+    <div class="w-full flex flex-col items-center my-10">
         <h1 class="text-xl text-center font-semibold mb-10">Criar Campanha</h1>
 
-        <form class="max-w-[600px]" method="POST" action="{{ route('affiliate.store') }}">
+        <form class="max-w-[600px]" method="POST" action="{{ route('affiliate.store') }}" enctype="multipart/form-data">
             @csrf
             <label class="text-sm" for="title">Título</label>
             <input
@@ -39,7 +39,7 @@
             </div>
 
             <label class="text-sm" for="description">Descrição</label>
-            <textarea name="description" id="description" class="w-full h-[100px] p-2 mb-3 text-white border border-[#363333] rounded"
+            <textarea name="description" id="description" class="w-full h-[150px] p-2 mb-3 text-white border border-[#363333] rounded"
                 placeholder="Descrição do sorteio">{{ old('description') }}</textarea>
 
             <div class="flex gap-2 mt-4">

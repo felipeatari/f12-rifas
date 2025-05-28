@@ -8,6 +8,7 @@ use App\Services\SortitionService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class AffiliateController extends Controller
@@ -44,10 +45,26 @@ class AffiliateController extends Controller
         $data['slug'] = Str::slug($data['title']);
         $data['date'] = Carbon::parse($data['date'])->format('Y-m-d H:i:s');
 
+        $image = $request->file('image');
+
+        if ($image and !$image->isValid()) {
+            return back()->withErrors(['image' => 'Arquivo inválido.']);
+        }
+
+        if ($image) {
+            $image = $image->storeAs('images/' . date('Ymd'), $image->hashName(), [
+                'disk' => 'public',
+            ]);
+
+            $image = Storage::disk('public')->url($image);
+
+            $data['image'] = $image;
+        }
+
         $this->sortitionService->create($data);
 
         if ($this->sortitionService->code() != 201) {
-            return redirect()->back()->with('error', $this->sortitionService->message())->withInput();
+            return back()->with('error', $this->sortitionService->message())->withInput();
         }
 
         return redirect()->route('affiliate.index')->with('success', 'Sorteio criado com suceso!');
@@ -69,10 +86,26 @@ class AffiliateController extends Controller
         $data['slug'] = Str::slug($data['title']);
         $data['date'] = Carbon::parse($data['date'])->format('Y-m-d H:i:s');
 
+        $image = $request->file('image');
+
+        if ($image and !$image->isValid()) {
+            return back()->withErrors(['image' => 'Arquivo inválido.']);
+        }
+
+        if ($image) {
+            $image = $image->storeAs('images/' . date('Ymd'), $image->hashName(), [
+                'disk' => 'public',
+            ]);
+
+            $image = Storage::disk('public')->url($image);
+
+            $data['image'] = $image;
+        }
+
         $this->sortitionService->update($id, $data);
 
         if ($this->sortitionService->code() != 200) {
-            return redirect()->back()->with('error', $this->sortitionService->message())->withInput();
+            return back()->with('error', $this->sortitionService->message())->withInput();
         }
 
         return redirect()->route('affiliate.index')->with('success', 'Sorteio atualizado com suceso!');
