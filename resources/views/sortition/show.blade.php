@@ -1,6 +1,6 @@
 <x-layout.sortition>
-    <div class="w-full flex flex-col items-center my-10">
-        <div class="w-[400px]">
+    <div class="w-full flex flex-col items-center my-10 px-2 md:px-0">
+        <div class="w-full max-w-[400px]">
             <div class="w-full text-center">
                 <h1 class="text-3xl text-center font-semibold mb-2">{{ $sortition->title }}</h1>
                 <p class="text-sm">{{ $sortition->description }}</p>
