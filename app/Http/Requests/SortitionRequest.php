@@ -26,7 +26,7 @@ class SortitionRequest extends FormRequest
             'title' => 'required|string|max:100',
             'description' => 'required|string|max:1000',
             'price' => 'required|numeric|min:0.01|max:99999999.99',
-            'numbers' => 'required|integer|min:0',
+            'numbers_amount' => 'required|integer|min:0',
             'date' => 'required|string|max:255',
             'image' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:5120', // Até 5MB
         ];
@@ -41,7 +41,7 @@ class SortitionRequest extends FormRequest
             'description.max' => 'O "Título" não pode ter mais de 1.000 caracteres.',
             'price.required' => 'Campo "Preço" obrigatório.',
             'price.numeric' => 'Valor do "Preço" inválido. Verfique e tente novamente.',
-            'numbers.required' => 'Campo "Números" obrigatório.',
+            'numbers_amount.required' => 'Campo "Números" obrigatório.',
             'date.required' => 'Campo "Data" obrigatório.',
             'image.required' => 'Campo "Imagem" obrigatório.',
             'image.file' => 'Arquivo inválido',

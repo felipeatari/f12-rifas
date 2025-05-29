@@ -3,6 +3,7 @@
 namespace App\DTO;
 
 use App\Models\Sortition;
+use Illuminate\Support\Collection;
 
 class SortitionDTO
 {
@@ -12,10 +13,11 @@ class SortitionDTO
     public ?string $description;
     public ?string $slug;
     public ?float $price;
-    public ?int $numbers;
+    public ?int $numbers_amount;
     public ?string $date;
     public ?string $status;
     public ?string $image;
+    private ?Collection $numbers;
 
     public function __construct(Sortition $data)
     {
@@ -25,10 +27,23 @@ class SortitionDTO
         $this->description = $data['description'];
         $this->slug = $data['slug'];
         $this->price = $data['price'];
-        $this->numbers = $data['numbers'];
+        $this->numbers_amount = $data['numbers_amount'];
         $this->date = $data['date'];
         $this->status = $data['status'];
         $this->image = $data['image'];
+
+        $this->setNumbers($data['numbers']);
+    }
+
+    public function setNumbers(?Collection $numers = null): self
+    {
+        $this->numbers = $numers;
+        return $this;
+    }
+
+    public function getNumbers(): Collection
+    {
+        return $this->numbers;
     }
 
     public function toArray(): array
@@ -40,7 +55,7 @@ class SortitionDTO
             'description' => $this->description,
             'slug' => $this->slug,
             'price' => $this->price,
-            'numbers' => $this->numbers,
+            'numbers_amount' => $this->numbers_amount,
             'date' => $this->date,
             'status' => $this->status,
             'image' => $this->image,

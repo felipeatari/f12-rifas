@@ -26,7 +26,8 @@ class SortitionRepository
 
             match ($key) {
                 'title' => $query->where('title', 'like', "%$value%"),
-                'slug' => $query->where('slug', 'like', "%$value%"),
+                'slug' => $query->where('slug', $value),
+                // 'slug' => $query->where('slug', 'like', "%$value%"),
                 'date' => $query->whereDate('date', $value),
                 'status' => $query->where('status', $value),
                 default => $query->where($key, $value),

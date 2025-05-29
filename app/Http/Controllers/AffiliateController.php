@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SortitionRequest;
+use App\Models\Number;
 use App\Models\Sortition;
 use App\Services\SortitionService;
 use Carbon\Carbon;
@@ -14,7 +15,7 @@ use Illuminate\Support\Str;
 class AffiliateController extends Controller
 {
     public function __construct(
-        private SortitionService $sortitionService
+        private SortitionService $sortition
     )
     {
     }
@@ -23,9 +24,9 @@ class AffiliateController extends Controller
     {
         $filter = $request->all();
         $perPage = $request->get('per_page', 5);
-        $columns = ['id', 'title'];
+        $columns = ['id', 'title', 'slug'];
 
-        $sortitions = $this->sortitionService->getAll($filter, $perPage, $columns);
+        $sortitions = $this->sortition->getAll($filter, $perPage, $columns);
 
         return view('affiliate.index', [
             'sortitions' => $sortitions ?? [],
@@ -61,18 +62,27 @@ class AffiliateController extends Controller
             $data['image'] = $image;
         }
 
-        $this->sortitionService->create($data);
+        $sortition = $this->sortition->create($data);
 
-        if ($this->sortitionService->code() != 201) {
-            return back()->with('error', $this->sortitionService->message())->withInput();
+        if ($this->sortition->code() != 201) {
+            return back()->with('error', $this->sortition->message())->withInput();
         }
+
+        for ($i = 1; $i <= $data['numbers_amount']; $i++):
+            Number::create([
+                'sortition_id' => $sortition->id,
+                'number' => $i,
+                'number_str' => str_pad($i, strlen((string) $data['numbers_amount']), '0', STR_PAD_LEFT),
+                'is_sold' => false
+            ]);
+        endfor;
 
         return redirect()->route('affiliate.index')->with('success', 'Sorteio criado com suceso!');
     }
 
     public function edit(Request $request, ?int $id = null)
     {
-        $sortition = $this->sortitionService->getById($id);
+        $sortition = $this->sortition->getById($id);
 
         return view('affiliate.edit', [
             'sortition' => $sortition,
@@ -102,10 +112,10 @@ class AffiliateController extends Controller
             $data['image'] = $image;
         }
 
-        $this->sortitionService->update($id, $data);
+        $this->sortition->update($id, $data);
 
-        if ($this->sortitionService->code() != 200) {
-            return back()->with('error', $this->sortitionService->message())->withInput();
+        if ($this->sortition->code() != 200) {
+            return back()->with('error', $this->sortition->message())->withInput();
         }
 
         return redirect()->route('affiliate.index')->with('success', 'Sorteio atualizado com suceso!');

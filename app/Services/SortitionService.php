@@ -48,7 +48,7 @@ class SortitionService
             $item = $this->sortitionRepository->getOne($filter, $perPage, $columns);
 
             if (! $columns) {
-                $item = SortitionDTO::fromModel($item);
+                if ($item) $item = SortitionDTO::fromModel($item);
             }
 
             return $item;

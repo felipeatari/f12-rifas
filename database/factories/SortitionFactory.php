@@ -24,7 +24,7 @@ class SortitionFactory extends Factory
             'description' => $this->faker->paragraph,
             'slug' => Str::slug($title),
             'price' => $this->faker->randomFloat(2, 5, 50),
-            'numbers' => $this->faker->numberBetween(100, 500),
+            'numbers_amount' => $this->faker->numberBetween(100, 500),
             'date' => $this->faker->dateTimeBetween('+1 days', '+30 days'),
             'status' => 'active',
             'image' => null,

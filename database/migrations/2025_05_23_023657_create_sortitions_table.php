@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('slug');
             $table->decimal('price', 10, 2);
-            $table->integer('numbers');
+            $table->integer('numbers_amount');
             $table->timestamp('date');
             $table->string('image')->nullable();
             $table->enum('status', ['active', 'closed'])->default('active');

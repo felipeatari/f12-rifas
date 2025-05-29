@@ -71,10 +71,13 @@
     </header>
 
     <!-- Home Banner -->
-    <section id="home" class="bg-[#111111] px-4 text-center h-screen flex flex-col justify-evenly">
-        <div class="max-w-5xl mx-auto space-y-6">
-            <h1 class="md:text-6xl text-4xl font-extrabold text-yellow-400">Olá, somos a F12 Rifas</h1>
-            <p class="text-xl text-gray-300">
+    <section id="home" class="bg-[#0a0a0a] px-4 text-center h-screen flex flex-col justify-evenly">
+        <div class="flex flex-col items-center">
+            <div class="text-start mb-10">
+                <h1 class="text-5xl font-extrabold text-yellow-400">Olá, somos a</h1>
+                <h1 class="text-8xl font-extrabold text-yellow-400">F12 <span class="">Rifas</span></h1>
+            </div>
+            <p class="text-xl text-gray-300 font-semibold">
                 Uma plataforma simples e objetiva, focada em campanhas pequenas e médias.<br>
                 Cadastre sorteios, gerencie vendas e receba via Pix com segurança.
             </p>
@@ -85,9 +88,10 @@
                 class="w-[250px] md:w-[400px] bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg text-lg transition my-8">Cadastre-se</a>
         </div>
     </section>
+    <!-- Home Banner -->
 
     <!-- Como Funciona -->
-    <section id="como-funciona" class="bg-[#1a1a1a] flex flex-col justify-around items-center py-16 px-4">
+    <section id="como-funciona" class="bg-[#111111] flex flex-col justify-around items-center py-16 px-4">
         <h2 class="text-3xl font-bold text-yellow-400 mb-10">Como funciona?</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div class="bg-[#070606] p-6 rounded-lg border border-yellow-500">
@@ -120,7 +124,7 @@
     </section>
 
     <!-- Por que usar -->
-    <section id="porque-usar" class="bg-[#111111] py-16 px-4">
+    <section id="porque-usar" class="bg-[#0a0a0a] py-16 px-4">
         <div class="max-w-4xl mx-auto">
             <h2 class="text-3xl font-bold text-yellow-400 text-center mb-12">Por que usar o F12 Rifas?</h2>
 
@@ -204,7 +208,7 @@
     @endif
 
     <!-- Footer -->
-    <footer class="bg-[#1a1a1a] text-white py-10 text-center text-sm">
+    <footer class="bg-[#111111] text-white py-10 text-center text-sm">
         <div class="max-w-5xl mx-auto">
             <p>&copy; 2025 F12 Rifas. Todos os direitos reservados.</p>
             <div class="mt-4">

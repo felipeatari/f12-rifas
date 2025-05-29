@@ -19,8 +19,8 @@
                     >
                 </div>
                 <div class="w-1/2">
-                    <label class="text-sm" for="numbers">Quantidade de números</label>
-                    <input name="numbers" id="numbers" type="number" value="{{ old('numbers') }}" placeholder="Ex: 1000"
+                    <label class="text-sm" for="numbers_amount">Quantidade de números</label>
+                    <input name="numbers_amount" id="numbers_amount" type="number" value="{{ old('numbers_amount') }}" placeholder="Ex: 1000"
                         class="w-full p-2 mb-3 text-white border border-[#363333] rounded">
                 </div>
             </div>

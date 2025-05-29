@@ -2,7 +2,7 @@
     <div class="w-full flex flex-col items-center my-10">
         <h1 class="text-xl text-center font-semibold mb-10">Editar Campanha</h1>
 
-        <div class="h-[200px] mt-10 mb-20 flex items-center justify-center bg-gray-50 border border-dashed border-gray-300 rounded">
+        <div class="min-w-[200px] h-[300px] mt-10 mb-20 flex items-center justify-center bg-gray-50 border border-dashed border-gray-300 rounded">
             @if ($sortition->image)
                 <img src="{{ $sortition->image }}" alt="Imagem do sorteio" class="max-w-[300px] h-auto" />
             @else
@@ -31,8 +31,8 @@
                     >
                 </div>
                 <div class="w-1/2">
-                    <label class="text-sm" for="numbers">Quantidade de números</label>
-                    <input name="numbers" id="numbers" type="number" value="{{ old('numbers', $sortition->numbers) }}" placeholder="Ex: 1000"
+                    <label class="text-sm" for="numbers_amount">Quantidade de números</label>
+                    <input readonly name="numbers_amount" id="numbers_amount" type="number" value="{{ old('numbers_amount', $sortition->numbers_amount) }}" placeholder="Ex: 1000"
                         class="w-full p-2 mb-3 text-white border border-[#363333] rounded">
                 </div>
             </div>
