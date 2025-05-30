@@ -24,7 +24,7 @@
     <!-- Home Banner -->
 
     <!-- Como Funciona -->
-    <section id="como-funciona" class="bg-[#111111] flex flex-col justify-around items-center py-16 px-4 h-screen">
+    <section id="como-funciona" class="bg-[#111111] flex flex-col justify-around items-center py-16 px-4 min-h-screen">
         <h2 class="text-3xl font-bold text-yellow-400 mb-10">Como funciona?</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div class="bg-[#070606] p-6 rounded-lg border border-yellow-500">
@@ -58,7 +58,7 @@
      <!-- Como Funciona -->
 
     <!-- Por que usar -->
-    <section id="porque-usar" class="bg-[#0a0a0a] py-16 px-4 h-screen">
+    <section id="porque-usar" class="bg-[#0a0a0a] py-16 px-4 min-h-screen">
         <div class="max-w-4xl mx-auto">
             <h2 class="text-3xl font-bold text-yellow-400 text-center mb-12">Por que usar o F12 Rifas?</h2>
 

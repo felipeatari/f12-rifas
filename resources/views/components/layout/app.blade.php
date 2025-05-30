@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Somos a F12 Rifas, uma plafatorma focada em pequenos e medios sorteios, ideal para rifas solidárias, Pix na conta e sorteios pessoais. Cadastre-se gratuitamente de forma simplificada e já comece a vender. Só cobramos commisão por números vendidos. Nossa taxa mínia é 10%.">
     <title>F12 Rifas</title>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         function toggleMobileMenu() {

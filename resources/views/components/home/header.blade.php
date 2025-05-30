@@ -1,4 +1,3 @@
-{{-- <header class="bg-[#0a0a0a] w-full border-b border-yellow-500 py-4"> --}}
 <header class="bg-[#0a0a0a] w-full py-4">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="hidden md:flex justify-between items-center h-16">
