@@ -1,19 +1,20 @@
 <x-layout.account>
     <div class="min-h-screen flex items-center justify-center px-4">
         <div class="w-full max-w-sm bg-[#111111] text-white rounded-lg p-6 shadow-md">
-            <a href="{{ route('home') }}" class="text-sm text-yellow-400 hover:underline mb-4 inline-block">← Voltar para o site</a>
+            <a href="{{ route('home.index') }}" class="text-sm text-yellow-400 hover:underline mb-4 inline-block">← Voltar para o site</a>
 
             <h1 class="text-xl text-center font-semibold mt-4 mb-8">Criar sua conta</h1>
 
-            @if ($errors->any())
-                <div class="bg-red-100 border border-red-300 text-red-700 text-sm p-2 mb-4 rounded">
-                    @foreach ($errors->all() as $error)
-                        <p>{{ $error }}</p>
-                    @endforeach
-                </div>
-            @endif
+            <form method="POST" action="">
+                @csrf
+                @if ($errors->any())
+                    <div class="bg-red-100 border border-red-300 text-red-700 text-sm p-2 mb-4 rounded">
+                        @foreach ($errors->all() as $error)
+                            <p>{{ $error }}</p>
+                        @endforeach
+                    </div>
+                @endif
 
-            <form>
                 <div class="flex gap-2 mb-3">
                     <input name="firstName" type="text" class="w-1/2  p-2 mb-3 text-white border border-[#363333] rounded" placeholder="Nome">
                     <input name="lastName" type="text" class="w-1/2  p-2 mb-3 text-white border border-[#363333] rounded" placeholder="Sobrenome">

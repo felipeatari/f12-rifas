@@ -17,7 +17,7 @@ class SortitionController extends Controller
     {
         $sortition = $this->sortition->getOne(['slug' => $slug]);
 
-        if (!$sortition) return redirect()->route('home');
+        if (!$sortition) return redirect()->route('home.index');
 
         return view('sortition.show', [
             'sortition' => $sortition,

@@ -8,7 +8,9 @@ use App\Http\Controllers\AffiliateController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SortitionController;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/termos-de-uso', [HomeController::class, 'termOfUse'])->name('home.term-of-use');
+Route::get('/politica-de-privacidade', [HomeController::class, 'privacyPolicy'])->name('home.privacy-policy');
 Route::get('/sorteio/{slug}', [SortitionController::class, 'show'])->name('sortition.show');
 
 Route::middleware('guest')->group(function($route) {
