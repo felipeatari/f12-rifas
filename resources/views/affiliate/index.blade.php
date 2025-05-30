@@ -1,12 +1,12 @@
 <x-layout.affiliate>
     <div class="w-full flex justify-center font-sans">
-        <main class="w-full mt-10">
+        <main class="w-full">
             <!-- Meus Sorteios -->
             <form id="meus-sorteios" class="mb-10">
-                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+                <div class="w-full flex justify-between items-center mb-6 gap-4">
                     <h2 class="text-xl font-bold text-white">Meus Sorteios</h2>
                     <a href="{{ route('affiliate.create') }}"
-                        class="w-full sm:w-[150px] bg-yellow-600 text-black text-center px-4 py-2 rounded-lg font-bold hover:bg-yellow-700 transition">
+                        class="w-fullw-[150px] bg-yellow-600 text-black text-center px-4 py-2 rounded-lg font-bold hover:bg-yellow-700 transition">
                         Cadastrar
                     </a>
                 </div>
@@ -74,14 +74,6 @@
                         @if ($sortitions and $sortitions->hasPages())
                             <tfoot>
                                 <tr>
-                                    {{-- <td class="px-3 py-3">
-                                    <select name="per_page" class="bg-[#0d0d0d] text-yellow-600 border border-yellow-600 px-2 py-1 rounded">
-                                        <option value="5">5 por página</option>
-                                        <option value="10">10 por página</option>
-                                        <option value="50">50 por página</option>
-                                    </select>
-                                </td> --}}
-                                    {{-- <td></td> --}}
                                     <td class="px-3 py-3" colspan="2">
                                         <div class="flex justify-center text-yellow-600">
                                             {{ $sortitions->links() }}
@@ -93,6 +85,7 @@
                     </table>
                 </div>
             </form>
+            <!-- Meus Sorteios -->
         </main>
     </div>
 </x-layout.affiliate>

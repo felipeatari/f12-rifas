@@ -17,14 +17,6 @@
                 <div class="my-10"></div>
             @endif
 
-            {{-- <div class="h-[300px] mt-10 mb-10 flex items-center justify-center border border-[#363333] rounded">
-                @if ($image = $sortition->image)
-                    <img src="{{ $image }}" alt="Imagem do sorteio" class="max-w-[300px] h-auto" />
-                @else
-                    <span class="w-[200px] h-[300px] text-sm text-gray-400">Sem imagem</span>
-                @endif
-            </div> --}}
-
             @if ($numbers = $sortition->getNumbers()->count())
                 <div class="w-full flex flex-col items-center">
                     <span class="font-semibold">Restam {{ $numbers }} números</span>
