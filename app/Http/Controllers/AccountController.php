@@ -11,12 +11,12 @@ class AccountController extends Controller
 {
     public function login(Request $request)
     {
-        return view('account.login');
+        return view('account.login', ['title' => 'Login']);
     }
 
     public function register(Request $request)
     {
-        return view('account.register');
+        return view('account.register', ['title' => 'Cadastrar']);
     }
 
     public function authenticate(LoginRequest $request)

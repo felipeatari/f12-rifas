@@ -1,5 +1,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/x-icon" href="{{ asset('assets/icons/favicon.ico') }}">
+<title>F12 Rifas - Termos de Uso</title>
 @vite('resources/css/app.css')
 <div class="bg-[#111111] text-white py-12 px-6 min-h-screen">
     <div class="max-w-4xl mx-auto">
