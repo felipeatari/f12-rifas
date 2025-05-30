@@ -32,14 +32,14 @@
 
             <div class="flex justify-center mt-8 gap-4">
                 <button onclick="toggleMobileMenu()"
-                    class="w-[100px] text-white border border-yellow-500 rounded-lg px-4 py-2">Menu</button>
+                    class="w-[115px] text-white border border-yellow-500 rounded-lg px-4 py-2">Menu</button>
                 @if (Auth::check())
                     <a href="{{ route('painel') }}"
-                        class="w-[100px] bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition">Minha
+                        class="w-[115px] bg-yellow-500 hover:bg-yellow-600 text-black text-center font-semibold py-2 px-4 rounded-lg transition">Minha
                         Conta</a>
                 @else
                     <a href="{{ route('login') }}"
-                        class="w-[100px] bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition">Acessar</a>
+                        class="w-[115px] bg-yellow-500 hover:bg-yellow-600 text-black text-center font-semibold py-2 px-4 rounded-lg transition">Acessar</a>
                 @endif
             </div>
             <div id="mobileMenu"

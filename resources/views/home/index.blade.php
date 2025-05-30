@@ -2,11 +2,11 @@
     <!-- Home Banner -->
     <div id="home" class="bg-[#0a0a0a] text-center w-full h-screen">
         <section class="w-full h-full flex flex-col justify-evenly">
-            <div class="w-full flex flex-col items-center">
+            <div class="w-full flex flex-col items-center px-4">
                 <div class="text-center mb-10">
                     <h1 class="text-8xl font-extrabold text-yellow-400">F12 RIFAS</h1>
                 </div>
-                <p class="max-w-[400px] text-xl text-gray-300 mt-10 px-2">
+                <p class="max-w-[400px] text-xl text-gray-300 mt-10">
                     Uma plataforma simples e objetiva, focada em pequenas e médias campanhas. <br>
                     <span class="font-semibold">Cadastre sorteios, gerencie vendas e receba via Pix com segurança.</span>
                 </p>

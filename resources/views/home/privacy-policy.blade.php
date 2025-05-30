@@ -1,7 +1,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 @vite('resources/css/app.css')
-<div class="bg-[#111111] text-white py-12 px-6 h-screen">
+<div class="bg-[#111111] text-white py-12 px-6 min-h-screen">
     <div class="max-w-4xl mx-auto">
         <div class="mb-8">
             <a href="{{ route('home.index') }}" class="text-sm text-yellow-400 hover:underline">← Voltar ao site</a>
