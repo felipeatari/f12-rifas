@@ -26,6 +26,10 @@ class AffiliateController extends Controller
         $perPage = $request->get('per_page', 5);
         $columns = ['id', 'title', 'slug'];
 
+        $filter = [
+            'user_id' => Auth::user()->id
+        ];
+
         $sortitions = $this->sortition->getAll($filter, $perPage, $columns);
 
         return view('affiliate.index', [

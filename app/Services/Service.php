@@ -10,7 +10,7 @@ abstract class Service
 
     abstract protected function repository(): mixed;
 
-    protected function exception(Exception $exception, string $notFoundMessage = 'Registro não encontrado')
+    protected function exception($exception, string $notFoundMessage = 'Registro não encontrado')
     {
         if ($exception instanceof ModelNotFoundException) {
             $this->status = 'error';

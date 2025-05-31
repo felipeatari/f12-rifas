@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class SortitionRepository
 {
-    private array $allowed = ['id', 'title', 'slug', 'scheduled_at', 'status'];
+    private array $allowed = ['id', 'user_id', 'title', 'slug', 'scheduled_at', 'status'];
 
     public function applyFilters($query, array $filters = [])
     {
