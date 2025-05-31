@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class SortitionRepository
 {
-    private array $allowed = ['id', 'title', 'slug', 'date', 'status'];
+    private array $allowed = ['id', 'title', 'slug', 'scheduled_at', 'status'];
 
     public function applyFilters($query, array $filters = [])
     {
@@ -27,8 +27,7 @@ class SortitionRepository
             match ($key) {
                 'title' => $query->where('title', 'like', "%$value%"),
                 'slug' => $query->where('slug', $value),
-                // 'slug' => $query->where('slug', 'like', "%$value%"),
-                'date' => $query->whereDate('date', $value),
+                'scheduled_at' => $query->whereDate('scheduled_at', $value),
                 'status' => $query->where('status', $value),
                 default => $query->where($key, $value),
             };

@@ -14,7 +14,8 @@ class Number extends Model
         'sortition_id',
         'number',
         'number_str',
-        'is_old',
+        'status',
+        'reserved_at',
     ];
 
     public function sortition(): BelongsTo

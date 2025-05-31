@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('slug');
             $table->decimal('price', 10, 2);
             $table->integer('numbers_amount');
-            $table->timestamp('date');
+            $table->dateTime('scheduled_at');
             $table->string('image')->nullable();
             $table->enum('status', ['active', 'closed'])->default('active');
             $table->timestamps();

@@ -23,7 +23,7 @@ class SaleSeeder extends Seeder
             $sortition = $sortitions->random();
 
             $availableNumbers = Number::where('sortition_id', $sortition->id)
-                ->where('is_sold', false)
+                ->where('status', 'available')
                 ->inRandomOrder()
                 ->limit(3)
                 ->get();
@@ -36,7 +36,7 @@ class SaleSeeder extends Seeder
 
             // Marcar como vendidos
             foreach ($availableNumbers as $num) {
-                $num->update(['is_sold' => true]);
+                $num->update(['status' => 'sold']);
             }
 
             Sale::create([

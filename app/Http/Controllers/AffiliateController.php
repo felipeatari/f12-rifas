@@ -44,7 +44,7 @@ class AffiliateController extends Controller
 
         $data['user_id'] = Auth::user()->id;
         $data['slug'] = Str::slug($data['title']);
-        $data['date'] = Carbon::parse($data['date'])->format('Y-m-d H:i:s');
+        $data['scheduled_at'] = Carbon::parse($data['scheduled_at'])->format('Y-m-d H:i:s');
 
         $image = $request->file('image');
 
@@ -73,7 +73,6 @@ class AffiliateController extends Controller
                 'sortition_id' => $sortition->id,
                 'number' => $i,
                 'number_str' => str_pad($i, strlen((string) $data['numbers_amount']), '0', STR_PAD_LEFT),
-                'is_sold' => false
             ]);
         endfor;
 
@@ -94,7 +93,7 @@ class AffiliateController extends Controller
         $data = $request->validated();
 
         $data['slug'] = Str::slug($data['title']);
-        $data['date'] = Carbon::parse($data['date'])->format('Y-m-d H:i:s');
+        $data['scheduled_at'] = Carbon::parse($data['scheduled_at'])->format('Y-m-d H:i:s');
 
         $image = $request->file('image');
 

@@ -4,11 +4,12 @@
         <section class="w-full h-full flex flex-col justify-evenly">
             <div class="w-full flex flex-col items-center px-4">
                 <div class="text-center mb-10">
-                    <h1 class="text-8xl font-extrabold text-yellow-400">F12 RIFAS</h1>
+                    <h1 class="text-6xl font-extrabold text-yellow-400">Vai fazer uma rifa?</h1>
                 </div>
                 <p class="max-w-[400px] text-xl text-gray-300 mt-10">
-                    Uma plataforma simples e objetiva, focada em pequenas e médias campanhas. <br>
-                    <span class="font-semibold">Cadastre sorteios, gerencie vendas e receba via Pix com segurança.</span>
+                    Com a <span class="font-bold text-yellow-400">F12 Rifas</span>, você cria e gerencia seus sorteios de forma simples, rápida e objetiva.
+                    E o melhor: <span class="font-bold text-yellow-400">totalmente grátis!</span> <br><br>
+                    <span class="font-bold">Cadastre rifas, acompanhe as vendas e receba via Pix, sem complicação.</span>
                 </p>
             </div>
 

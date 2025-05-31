@@ -17,7 +17,8 @@ return new class extends Migration
             $table->foreignIdFor(Sortition::class)->constrained()->onDelete('cascade');
             $table->integer('number');
             $table->string('number_str');
-            $table->boolean('is_sold')->default(false);
+            $table->enum('status', ['available', 'reserved', 'sold'])->default('available');
+            $table->timestamp('reserved_at')->nullable();
             $table->timestamps();
 
             $table->unique(['sortition_id', 'number']);

@@ -14,7 +14,7 @@ class SortitionDTO
     public ?string $slug;
     public ?float $price;
     public ?int $numbers_amount;
-    public ?string $date;
+    public ?string $scheduled_at;
     public ?string $status;
     public ?string $image;
     private ?Collection $numbers;
@@ -28,7 +28,7 @@ class SortitionDTO
         $this->slug = $data['slug'];
         $this->price = $data['price'];
         $this->numbers_amount = $data['numbers_amount'];
-        $this->date = $data['date'];
+        $this->scheduled_at = $data['scheduled_at'];
         $this->status = $data['status'];
         $this->image = $data['image'];
 
@@ -56,7 +56,7 @@ class SortitionDTO
             'slug' => $this->slug,
             'price' => $this->price,
             'numbers_amount' => $this->numbers_amount,
-            'date' => $this->date,
+            'scheduled_at' => $this->scheduled_at,
             'status' => $this->status,
             'image' => $this->image,
         ];

@@ -14,7 +14,6 @@ class NumberFactory extends Factory
         return [
             'sortition_id',
             'number',
-            'is_old',
         ];
     }
 }

@@ -27,8 +27,8 @@
 
             <div class="flex gap-2 my-4">
                 <div class="w-1/2">
-                    <label class="text-sm" for="date">Data do sorteio</label>
-                    <input name="date" id="date" type="datetime-local" value="{{ old('date') }}" placeholder="00/00/0000 00:00:00"
+                    <label class="text-sm" for="scheduled_at">Data do sorteio</label>
+                    <input name="scheduled_at" id="scheduled_at" type="datetime-local" value="{{ old('scheduled_at') }}" placeholder="00/00/0000 00:00:00"
                         class="w-full p-2 mb-3 text-white border border-[#363333] rounded">
                 </div>
                 <div class="w-1/2">

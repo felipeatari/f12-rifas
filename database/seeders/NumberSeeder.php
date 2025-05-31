@@ -22,7 +22,6 @@ class NumberSeeder extends Seeder
                     'sortition_id' => $sortition->id,
                     'number' => $i,
                     'number_str' => str_pad($i, strlen((string) $sortition->numbers_amount), '0', STR_PAD_LEFT),
-                    'is_sold' => false
                 ]);
             }
         }

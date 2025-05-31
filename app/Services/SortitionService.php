@@ -4,18 +4,17 @@ namespace App\Services;
 
 use App\DTO\SortitionDTO;
 use App\Repositories\SortitionRepository;
-use Error;
-use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class SortitionService
+class SortitionService extends Service
 {
     public function __construct(
-        protected SortitionRepository $sortitionRepository,
-        private string $status = 'success',
-        private string $message = '',
-        private mixed $code = 200,
+        protected SortitionRepository $sortitionRepository
     ) {}
+
+    protected function repository(): mixed
+    {
+        return $this->sortitionRepository;
+    }
 
     public function getAll(array $filter = [], $perPage = 10, array $columns = [])
     {
@@ -23,137 +22,64 @@ class SortitionService
             $data = $this->sortitionRepository->getAll($filter, $perPage, $columns);
 
             if (! $columns) {
-                $items = $data->getCollection()->map(fn($sortition) => SortitionDTO::fromModel($sortition));
-
+                $items = $data->getCollection()->map(fn($model) => SortitionDTO::fromModel($model));
                 $data->setCollection($items);
             }
 
             return $data;
-        } catch (ModelNotFoundException $exception) {
-            $this->status = 'error';
-            $this->code = 404;
-            $this->message = 'Sorteios não encontrados.';
-        } catch (Exception $exception) {
-            $this->status = 'error';
-            $this->code = $exception->getCode();
-            $this->message = $exception->getMessage();
+        } catch (\Exception $exception) {
+            return $this->exception($exception, 'Sorteios não encontrados.');
         }
-
-        return null;
     }
 
     public function getOne(array $filter = [], $perPage = 10, array $columns = [])
     {
         try {
             $item = $this->sortitionRepository->getOne($filter, $perPage, $columns);
-
-            if (! $columns) {
-                if ($item) $item = SortitionDTO::fromModel($item);
-            }
-
-            return $item;
-        } catch (ModelNotFoundException $exception) {
-            $this->status = 'error';
-            $this->code = 404;
-            $this->message = 'Sorteio não encontrado.';
-        } catch (Exception $exception) {
-            $this->status = 'error';
-            $this->code = $exception->getCode();
-            $this->message = $exception->getMessage();
+            return $columns ? $item : SortitionDTO::fromModel($item);
+        } catch (\Exception $exception) {
+            return $this->exception($exception, 'Sorteio não encontrado.');
         }
-
-        return null;
     }
 
     public function getById(?int $id = null)
     {
         try {
             $data = $this->sortitionRepository->getById($id);
-            $item = SortitionDTO::fromModel($data);
-
-            return $item;
-        } catch (ModelNotFoundException $exception) {
-            $this->status = 'error';
-            $this->code = 404;
-            $this->message = 'Sorteio não encontrado.';
-        } catch (Exception $exception) {
-            $this->status = 'error';
-            $this->code = $exception->getCode();
-            $this->message = $exception->getMessage();
+            return SortitionDTO::fromModel($data);
+        } catch (\Exception $exception) {
+            return $this->exception($exception, 'Sorteio não encontrado.');
         }
-
-        return null;
     }
 
     public function create(array $data)
     {
         try {
-            $data = $this->sortitionRepository->create($data);
-            $item = SortitionDTO::fromModel($data);
-
+            $item = $this->sortitionRepository->create($data);
             $this->code = 201;
-
-            return $item;
-        } catch (Exception $exception) {
-            $this->status = 'error';
-            $this->code = $exception->getCode();
-            $this->message = $exception->getMessage();
+            return SortitionDTO::fromModel($item);
+        } catch (\Exception $exception) {
+            return $this->exception($exception);
         }
-
-        return null;
     }
 
     public function update(?int $id = null, array $data = [])
     {
         try {
-            $data = $this->sortitionRepository->update($id, $data);
-            $item = SortitionDTO::fromModel($data);
-
-            return $item;
-        } catch (ModelNotFoundException $exception) {
-            $this->status = 'error';
-            $this->code = 404;
-            $this->message = 'Sorteio não encontrado.';
-        } catch (Exception $exception) {
-            $this->status = 'error';
-            $this->code = $exception->getCode();
-            $this->message = $exception->getMessage();
+            $item = $this->sortitionRepository->update($id, $data);
+            return SortitionDTO::fromModel($item);
+        } catch (\Exception $exception) {
+            return $this->exception($exception, 'Sorteio não encontrado.');
         }
-
-        return null;
     }
 
     public function delete(?int $id = null)
     {
         try {
             $this->sortitionRepository->delete($id);
-
             return true;
-        } catch (ModelNotFoundException $exception) {
-            $this->status = 'error';
-            $this->code = 404;
-            $this->message = 'Sorteio não encontrado.';
-        } catch (Exception $exception) {
-            $this->status = 'error';
-            $this->code = $exception->getCode();
-            $this->message = $exception->getMessage();
+        } catch (\Exception $exception) {
+            return $this->exception($exception, 'Sorteio não encontrado.');
         }
-
-        return null;
-    }
-
-    public function status()
-    {
-        return $this->status;
-    }
-
-    public function code()
-    {
-        return $this->code;
-    }
-
-    public function message()
-    {
-        return $this->message;
     }
 }

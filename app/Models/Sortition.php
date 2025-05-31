@@ -17,7 +17,7 @@ class Sortition extends Model
         'slug',
         'price',
         'numbers_amount',
-        'date',
+        'scheduled_at',
         'status',
         'image',
     ];

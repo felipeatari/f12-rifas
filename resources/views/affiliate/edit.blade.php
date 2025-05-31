@@ -2,9 +2,9 @@
     <div class="w-full flex flex-col items-center my-10">
         <h1 class="text-xl text-center font-semibold mb-10">Editar Campanha</h1>
 
-        <div class="min-w-[200px] h-[300px] mt-10 mb-20 flex items-center justify-center bg-gray-50 border border-dashed border-gray-300 rounded">
-            @if ($sortition->image)
-                <img src="{{ $sortition->image }}" alt="Imagem do sorteio" class="max-w-[300px] h-auto" />
+        <div class="min-w-[200px] h-[300px] mt-10 mb-20 flex items-center justify-center border border-[#363333] overflow-hidden">
+            @if ($image = $sortition->image)
+                <img src="{{ asset($sortition->image) }}" alt="Imagem do sorteio" class="h-full w-auto object-contain" />
             @else
                 <span class="text-sm text-gray-400">Sem imagem</span>
             @endif
@@ -39,8 +39,8 @@
 
             <div class="flex gap-2 my-4">
                 <div class="w-1/2">
-                    <label class="text-sm" for="date">Data do sorteio</label>
-                    <input name="date" id="date" type="datetime-local" value="{{ old('date', $sortition->date) }}" placeholder="00/00/0000 00:00:00"
+                    <label class="text-sm" for="scheduled_at">Data do sorteio</label>
+                    <input name="scheduled_at" id="scheduled_at" type="datetime-local" value="{{ old('scheduled_at', $sortition->scheduled_at) }}" placeholder="00/00/0000 00:00:00"
                         class="w-full p-2 mb-3 text-white border border-[#363333] rounded">
                 </div>
                 <div class="w-1/2">

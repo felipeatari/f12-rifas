@@ -24,10 +24,10 @@ class SortitionRequest extends FormRequest
         return [
             'user_id' => 'nullable|integer|min:0',
             'title' => 'required|string|max:100',
-            'description' => 'required|string|max:1000',
+            'description' => 'nullable|string|max:1000',
             'price' => 'required|numeric|min:0.01|max:99999999.99',
             'numbers_amount' => 'required|integer|min:0',
-            'date' => 'required|string|max:255',
+            'scheduled_at' => 'required|string|max:255',
             'image' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:5120', // Até 5MB
         ];
     }
@@ -37,12 +37,11 @@ class SortitionRequest extends FormRequest
         return [
             'title.required' => 'Campo "Título" obrigatório.',
             'title.max' => 'O "Título" não pode ter mais de 300 caracteres.',
-            'description.required' => 'Campo "Descrição" obrigatório.',
             'description.max' => 'O "Título" não pode ter mais de 1.000 caracteres.',
             'price.required' => 'Campo "Preço" obrigatório.',
             'price.numeric' => 'Valor do "Preço" inválido. Verfique e tente novamente.',
             'numbers_amount.required' => 'Campo "Números" obrigatório.',
-            'date.required' => 'Campo "Data" obrigatório.',
+            'scheduled_at.required' => 'Campo "Data" obrigatório.',
             'image.required' => 'Campo "Imagem" obrigatório.',
             'image.file' => 'Arquivo inválido',
             'image.mimes' => 'Arquivo inválido. Permitidos: jpg,jpeg,png ou webp.',

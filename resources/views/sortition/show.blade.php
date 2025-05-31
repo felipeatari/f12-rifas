@@ -10,8 +10,8 @@
             </div>
 
             @if ($image = $sortition->image)
-                <div class="h-[300px] my-10 flex items-center justify-center border border-[#363333] rounded">
-                    <img src="{{ $image }}" alt="Imagem do sorteio" class="max-w-[300px] h-auto" />
+                <div class="min-w-[200px] h-[300px] my-10 flex items-center justify-center border border-[#363333] overflow-hidden">
+                    <img src="{{ asset($image) }}" alt="Imagem do sorteio" class="h-full w-auto object-contain" />
                 </div>
             @else
                 <div class="my-10"></div>
@@ -34,9 +34,9 @@
             <div id="numberContainer"
                 class="hidden w-full h-[400px] overflow-y-auto flex flex-wrap justify-center items-start mt-5 py-1 bg-[#0d0d0d] rounded custom-scrollbar">
                 @foreach ($sortition->getNumbers() as $item)
-                    <div class="number-box border border-[#facc15] text-[#facc15] rounded-full min-w-12 h-12 p-2 m-1 flex items-center justify-center font-semibold text-sm cursor-pointer transition-colors duration-200"
-                        data-number="{{ $item->number }}">
-                        {{ str_pad($item->number, 3, '0', STR_PAD_LEFT) }}
+                    <div class="number-box border border-[#facc15] text-[#facc15] rounded-full min-w-14 h-14 p-2 m-1 flex items-center justify-center font-semibold text-sm cursor-pointer transition-colors duration-200"
+                        data-number="{{ $item->number_str }}">
+                        {{ $item->number_str }}
                     </div>
                 @endforeach
             </div>
