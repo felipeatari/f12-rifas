@@ -10,7 +10,8 @@
             </div>
 
             @if ($image = $sortition->image)
-                <div class="min-w-[200px] h-[300px] my-10 flex items-center justify-center border border-[#363333] overflow-hidden">
+                <div
+                    class="min-w-[200px] h-[300px] my-10 flex items-center justify-center border border-[#363333] overflow-hidden">
                     <img src="{{ asset($image) }}" alt="Imagem do sorteio" class="h-full w-auto object-contain" />
                 </div>
             @else
@@ -26,8 +27,7 @@
                     </button>
                 </div>
             @else
-                <div
-                    class="w-full py-2 mt-4 bg-red-500 hover:bg-red-600 text-black font-semibold rounded text-center">
+                <div class="w-full py-2 mt-4 bg-red-500 hover:bg-red-600 text-black font-semibold rounded text-center">
                     Não restam mais números</div>
             @endif
 
@@ -50,13 +50,21 @@
                         </tr>
                         <tr>
                             <th class="text-start pl-4 pt-4 font-semibold">Número(s)</th>
-                            <th class="text-end pr-4 pt-4 font-semibold">Subtotal</th>
+                            <th class="text-end pr-4 pt-4 font-semibold">Qtd. Números</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text pl-4 pt-1 pb-2">2, 7, 21</td>
-                            <td class="text-end pr-4 pt-1 pb-2">R$ 30,00</td>
+                            <td class="text pl-4 pt-1 pb-2" id="numbers-selected"></td>
+                            <td class="text-end pr-4 pt-1 pb-2" id="numbers-amount"></td>
+                        </tr>
+                        <tr>
+                            <td class="text pl-4 pt-1 pb-2">Valor Un</td>
+                            <td class="text-end pr-4 pt-1 pb-2" id="value-un"></td>
+                        </tr>
+                        <tr>
+                            <td class="text pl-4 pt-1 pb-2">Valor Total</td>
+                            <td class="text-end pr-4 pt-1 pb-2" id="value-total"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -74,7 +82,7 @@
                 <input type="text" name="cpf" id="cpf" value="{{ old('name') }}" placeholder="CPF"
                     class="w-full p-2 mt-1 mb-2 text-white border border-[#363333] rounded">
 
-                <button type="button"
+                <button type="button" onclick="verificarDisponibilidade()"
                     class="w-full bg-green-500 hover:bg-green-600 text-black text-sm font-bold py-2 rounded-md transition duration-200">
                     Checkout
                 </button>
@@ -83,39 +91,130 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // localStorage.clear();
+        const STORAGE_KEY = 'selectedNumbers'; // chave global
+
+        function atualizarNumerosSelecionados() {
+            const selectedTd = document.querySelector('#numbers-selected');
+            const amountTd = document.querySelector('#numbers-amount');
+            const subUnTd = document.querySelector('#value-un');
+            const subTotalTd = document.querySelector('#value-total');
+            const price = {{ $sortition->price }};
+            const savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const savedNumbersLength = savedNumbers.length;
+
+            if (savedNumbersLength === 0) {
+                selectedTd.textContent = '000';
+                amountTd.textContent = '0';
+                subUnTd.textContent = 'R$ 0';
+                subTotalTd.textContent = 'R$ 0';
+            } else {
+                const numerosFormatados = savedNumbers
+                    .map(n => n.toString().padStart(3, '0'))
+                    .join(', ');
+
+                const subTotal = savedNumbersLength * price;
+
+                selectedTd.textContent = numerosFormatados;
+                amountTd.textContent = savedNumbersLength.toString();
+                subUnTd.textContent = 'R$ ' + price;
+                subTotalTd.textContent = 'R$ ' + subTotal;
+            }
+        }
+
+        function verificarDisponibilidade() {
+            const testNumbersAvailable = ['002', '028']; // simulação
+
+            let savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+            // Filtro dos disponíveis
+            savedNumbers = savedNumbers.filter(n => testNumbersAvailable.includes(n));
+
+            // Atualiza localStorage
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNumbers));
+
+            // Atualiza classes visuais
             const numberBoxes = document.querySelectorAll('.number-box');
-
             numberBoxes.forEach(box => {
-                box.addEventListener('click', () => {
-                    const isSelected = box.classList.contains('bg-[#facc15]');
+                const number = box.dataset.number;
 
+                if (savedNumbers.includes(number)) {
+                    box.classList.add('bg-[#facc15]', 'text-black');
+                    box.classList.remove('text-[#facc15]');
+                } else {
                     box.classList.remove('bg-[#facc15]', 'text-black');
                     box.classList.add('text-[#facc15]');
+                }
+            });
 
-                    if (!isSelected) {
+            atualizarNumerosSelecionados();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const numberBoxes = document.querySelectorAll('.number-box');
+            const savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+            // Marcar os que estavam salvos
+            numberBoxes.forEach(box => {
+                const number = box.dataset.number;
+
+                if (savedNumbers.includes(number)) {
+                    box.classList.add('bg-[#facc15]', 'text-black');
+                    box.classList.remove('text-[#facc15]');
+                }
+
+                box.addEventListener('click', () => {
+                    const index = savedNumbers.indexOf(number);
+                    const isSelected = index > -1;
+
+                    if (isSelected) {
+                        // Desmarcar
+                        savedNumbers.splice(index, 1);
+                        box.classList.remove('bg-[#facc15]', 'text-black');
+                        box.classList.add('text-[#facc15]');
+                    } else {
+                        // Marcar
+                        savedNumbers.push(number);
                         box.classList.add('bg-[#facc15]', 'text-black');
                         box.classList.remove('text-[#facc15]');
                     }
+
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNumbers));
+                    atualizarNumerosSelecionados();
                 });
             });
-        });
 
-        document.addEventListener("DOMContentLoaded", function () {
-        const button = document.getElementById("toggleButton");
-        const container = document.getElementById("numberContainer");
+            // Atualiza os números ao carregar
+            atualizarNumerosSelecionados();
 
-        button.addEventListener("click", () => {
-            const isHidden = container.classList.contains("hidden");
+            // Controle de toggle do container
+            const button = document.querySelector("#toggleButton");
+            const container = document.querySelector("#numberContainer");
+            const TOGGLE_STORAGE_KEY = "numberContainerVisible";
+            const savedState = localStorage.getItem(TOGGLE_STORAGE_KEY);
+            const isVisible = savedState === "true";
 
-            if (isHidden) {
+            if (isVisible) {
                 container.classList.remove("hidden");
                 button.textContent = "Toque para fechar";
             } else {
                 container.classList.add("hidden");
                 button.textContent = "Toque para ver";
             }
+
+            button.addEventListener("click", () => {
+                const isHidden = container.classList.contains("hidden");
+
+                if (isHidden) {
+                    container.classList.remove("hidden");
+                    button.textContent = "Toque para fechar";
+                    localStorage.setItem(TOGGLE_STORAGE_KEY, "true");
+                } else {
+                    container.classList.add("hidden");
+                    button.textContent = "Toque para ver";
+                    localStorage.setItem(TOGGLE_STORAGE_KEY, "false");
+                }
+            });
         });
-    });
     </script>
 </x-layout.sortition>

@@ -6,9 +6,8 @@
                 <div class="text-center mb-10">
                     <h1 class="text-6xl font-extrabold text-yellow-400">Vai fazer uma rifa?</h1>
                 </div>
-                <p class="max-w-[400px] text-xl text-gray-300 mt-10">
-                    Com a <span class="font-bold text-yellow-400">F12 Rifas</span>, você cria e gerencia seus sorteios de forma simples, rápida e objetiva.
-                    E o melhor: <span class="font-bold text-yellow-400">totalmente grátis!</span> <br><br>
+                <p class="max-w-[700px] text-xl text-gray-300 mt-10">
+                    Com a <span class="font-bold text-yellow-400">F12 Rifas</span>, você cria e gerencia seus sorteios de forma simples, rápida e objetiva. E o melhor: <span class="font-bold text-yellow-400">totalmente grátis!</span> <br><br>
                     <span class="font-bold">Cadastre rifas, acompanhe as vendas e receba via Pix, sem complicação.</span>
                 </p>
             </div>
