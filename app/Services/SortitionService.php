@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\DTO\SortitionDTO;
 use App\Repositories\SortitionRepository;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SortitionService extends Service
 {
@@ -36,8 +38,15 @@ class SortitionService extends Service
     {
         try {
             $item = $this->sortitionRepository->getOne($filter, $perPage, $columns);
-            return $columns ? $item : SortitionDTO::fromModel($item);
-        } catch (\Exception $exception) {
+
+            if (!$columns) {
+                $item = SortitionDTO::fromModel($item);
+            }
+
+            return $item;
+        } catch (ModelNotFoundException $exception) {
+            return $this->exception($exception, 'Sorteio não encontrado.');
+        } catch (Exception $exception) {
             return $this->exception($exception, 'Sorteio não encontrado.');
         }
     }

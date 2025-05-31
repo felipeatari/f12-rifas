@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 abstract class Service
 {
     protected string $status = 'success';

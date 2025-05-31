@@ -68,9 +68,12 @@ class SortitionRepository
 
             $data = $query->first();
 
-            return $data;
-        } catch (Exception $exception) {
+            if (! $data) throw new ModelNotFoundException('Not Found.', 404);
 
+            return $data;
+        } catch (ModelNotFoundException $exception) {
+            throw $exception;
+        } catch (Exception $exception) {
             throw $exception;
         }
     }

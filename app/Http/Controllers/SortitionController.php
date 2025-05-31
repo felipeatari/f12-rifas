@@ -17,6 +17,11 @@ class SortitionController extends Controller
     {
         $sortition = $this->sortition->getOne(['slug' => $slug]);
 
+        // dd([
+        //     'code' => $this->sortition->code(),
+        //     'message' => $this->sortition->message(),
+        // ]);
+
         if (!$sortition) return redirect()->route('home.index');
 
         return view('sortition.show', [
