@@ -103,6 +103,8 @@
             const savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
             const savedNumbersLength = savedNumbers.length;
 
+            console.log('atualizarNumerosSelecionados: ', savedNumbers);
+
             if (savedNumbersLength === 0) {
                 selectedTd.textContent = '000';
                 amountTd.textContent = '0';
@@ -123,31 +125,35 @@
         }
 
         function verificarDisponibilidade() {
-            const testNumbersAvailable = ['002', '028']; // simulação
+            // const testNumbersAvailable = ['002', '028']; // simulação
 
-            let savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            // let savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-            // Filtro dos disponíveis
-            savedNumbers = savedNumbers.filter(n => testNumbersAvailable.includes(n));
+            // // Filtro dos disponíveis
+            // savedNumbers = savedNumbers.filter(n => testNumbersAvailable.includes(n));
 
-            // Atualiza localStorage
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNumbers));
+            // console.log('verificarDisponibilidade: ', savedNumbers);
 
-            // Atualiza classes visuais
-            const numberBoxes = document.querySelectorAll('.number-box');
-            numberBoxes.forEach(box => {
-                const number = box.dataset.number;
+            // // Atualiza localStorage
+            // localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNumbers));
 
-                if (savedNumbers.includes(number)) {
-                    box.classList.add('bg-[#facc15]', 'text-black');
-                    box.classList.remove('text-[#facc15]');
-                } else {
-                    box.classList.remove('bg-[#facc15]', 'text-black');
-                    box.classList.add('text-[#facc15]');
-                }
-            });
+            // // Atualiza classes visuais
+            // const numberBoxes = document.querySelectorAll('.number-box');
+            // numberBoxes.forEach(box => {
+            //     const number = box.dataset.number;
 
-            atualizarNumerosSelecionados();
+            //     if (savedNumbers.includes(number)) {
+            //         box.classList.add('bg-[#facc15]', 'text-black');
+            //         box.classList.remove('text-[#facc15]');
+            //     } else {
+            //         box.classList.remove('bg-[#facc15]', 'text-black');
+            //         box.classList.add('text-[#facc15]');
+            //     }
+            // });
+
+            // atualizarNumerosSelecionados();
+
+            // window.location.reload()
         }
 
         document.addEventListener('DOMContentLoaded', function() {

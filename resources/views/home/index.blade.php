@@ -1,7 +1,7 @@
 <x-layout.app>
     <!-- Home Banner -->
     <div id="home" class="bg-[#0a0a0a] text-center w-full h-screen">
-        <section class="w-full h-full flex flex-col justify-evenly">
+        <section class="w-full h-full flex flex-col justify-around">
             <div class="w-full flex flex-col items-center px-4">
                 <div class="text-center mb-10">
                     <h1 class="text-6xl font-extrabold text-yellow-400">Vai fazer uma rifa?</h1>
