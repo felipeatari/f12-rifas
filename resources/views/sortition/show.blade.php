@@ -21,10 +21,10 @@
             @if ($numbers = $sortition->getNumbers()->count())
                 <div class="w-full flex flex-col items-center">
                     <span class="font-semibold">Restam {{ $numbers }} números</span>
-                    <button id="toggleButton"
+                    {{-- <button id="toggleButton"
                         class="w-full py-2 mt-4 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded">
                         Toque para ver
-                    </button>
+                    </button> --}}
                 </div>
             @else
                 <div class="w-full py-2 mt-4 bg-red-500 hover:bg-red-600 text-black font-semibold rounded text-center">
@@ -32,7 +32,7 @@
             @endif
 
             <div id="numberContainer"
-                class="hidden w-full h-[400px] overflow-y-auto flex flex-wrap justify-center items-start mt-5 py-1 bg-[#0d0d0d] rounded custom-scrollbar">
+                class="w-full h-[400px] overflow-y-auto flex flex-wrap justify-center items-start mt-5 py-1 bg-[#0d0d0d] rounded custom-scrollbar">
                 @foreach ($sortition->getNumbers() as $item)
                     <div class="number-box border border-[#facc15] text-[#facc15] rounded-full min-w-14 h-14 p-2 m-1 flex items-center justify-center font-semibold text-sm cursor-pointer transition-colors duration-200"
                         data-number="{{ $item->number_str }}">
@@ -82,7 +82,7 @@
                 <input type="text" name="cpf" id="cpf" value="{{ old('name') }}" placeholder="CPF"
                     class="w-full p-2 mt-1 mb-2 text-white border border-[#363333] rounded">
 
-                <button type="button" onclick="verificarDisponibilidade()"
+                <button type="button" onclick="checkAvailableNumbers()"
                     class="w-full bg-green-500 hover:bg-green-600 text-black text-sm font-bold py-2 rounded-md transition duration-200">
                     Checkout
                 </button>
@@ -94,7 +94,7 @@
         // localStorage.clear();
         const STORAGE_KEY = 'selectedNumbers'; // chave global
 
-        function atualizarNumerosSelecionados() {
+        function updateSelectedNumbers() {
             const selectedTd = document.querySelector('#numbers-selected');
             const amountTd = document.querySelector('#numbers-amount');
             const subUnTd = document.querySelector('#value-un');
@@ -103,7 +103,7 @@
             const savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
             const savedNumbersLength = savedNumbers.length;
 
-            console.log('atualizarNumerosSelecionados: ', savedNumbers);
+            console.log('updateSelectedNumbers: ', savedNumbers);
 
             if (savedNumbersLength === 0) {
                 selectedTd.textContent = '000';
@@ -112,7 +112,7 @@
                 subTotalTd.textContent = 'R$ 0';
             } else {
                 const numerosFormatados = savedNumbers
-                    .map(n => n.toString().padStart(3, '0'))
+                    .map(n => n.toString())
                     .join(', ');
 
                 const subTotal = savedNumbersLength * price;
@@ -124,36 +124,64 @@
             }
         }
 
-        function verificarDisponibilidade() {
-            // const testNumbersAvailable = ['002', '028']; // simulação
+        function checkAvailableNumbers() {
+            let numbersNotAvailable = ['001','002'];
+            console.log(numbersNotAvailable.length)
+            // let numbersNotAvailable = [];
+            let savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-            // let savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const originalSavedNumbers = [...savedNumbers];
 
-            // // Filtro dos disponíveis
-            // savedNumbers = savedNumbers.filter(n => testNumbersAvailable.includes(n));
+            // Remove números que não estão mais disponíveis
+            savedNumbers = savedNumbers.filter(n => !numbersNotAvailable.includes(n));
+            numbersNotSaved = originalSavedNumbers.filter(n => numbersNotAvailable.includes(n));
 
-            // console.log('verificarDisponibilidade: ', savedNumbers);
+            console.log('Números válidos no localStorage:', savedNumbers);
 
-            // // Atualiza localStorage
-            // localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNumbers));
+            if (numbersNotSaved && numbersNotSaved.length > 0) {
+                let messageAlert = '';
 
-            // // Atualiza classes visuais
-            // const numberBoxes = document.querySelectorAll('.number-box');
-            // numberBoxes.forEach(box => {
-            //     const number = box.dataset.number;
+                if (numbersNotAvailable.length == 1) {
+                    messageAlert = `
+                        <p>O número que você havia selecionado não está mais disponíveil: <strong>${numbersNotSaved.map(n => n)}</strong></p>
+                    `;
+                } else {
+                    messageAlert = `
+                        <p>Os seguintes números que você havia selecionado não estão mais disponíveis:</p>
+                        <strong>${numbersNotSaved.map(n => n).join(', ')}</strong>
+                    `;
+                }
+                console.log('Números não válidos no localStorage:', numbersNotSaved);
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Atenção!',
+                    html: messageAlert,
+                    confirmButtonText: 'Entendi',
+                    confirmButtonColor: '#facc15'
+                });
 
-            //     if (savedNumbers.includes(number)) {
-            //         box.classList.add('bg-[#facc15]', 'text-black');
-            //         box.classList.remove('text-[#facc15]');
-            //     } else {
-            //         box.classList.remove('bg-[#facc15]', 'text-black');
-            //         box.classList.add('text-[#facc15]');
-            //     }
-            // });
+                window.location.reload(true);
+            }
 
-            // atualizarNumerosSelecionados();
+            // Atualiza o localStorage
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNumbers));
 
-            // window.location.reload()
+            // Atualiza visualmente os botões
+            const numberBoxes = document.querySelectorAll('.number-box');
+            numberBoxes.forEach(box => {
+                const number = box.dataset.number;
+
+                if (savedNumbers.includes(number)) {
+                    box.classList.add('bg-[#facc15]', 'text-black');
+                    box.classList.remove('text-[#facc15]');
+                } else {
+                    box.classList.remove('bg-[#facc15]', 'text-black');
+                    box.classList.add('text-[#facc15]');
+                }
+            });
+
+            // Atualiza a exibição do resumo
+            updateSelectedNumbers();
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -186,41 +214,13 @@
                     }
 
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNumbers));
-                    atualizarNumerosSelecionados();
+                    updateSelectedNumbers();
                 });
             });
 
             // Atualiza os números ao carregar
-            atualizarNumerosSelecionados();
-
-            // Controle de toggle do container
-            const button = document.querySelector("#toggleButton");
-            const container = document.querySelector("#numberContainer");
-            const TOGGLE_STORAGE_KEY = "numberContainerVisible";
-            const savedState = localStorage.getItem(TOGGLE_STORAGE_KEY);
-            const isVisible = savedState === "true";
-
-            if (isVisible) {
-                container.classList.remove("hidden");
-                button.textContent = "Toque para fechar";
-            } else {
-                container.classList.add("hidden");
-                button.textContent = "Toque para ver";
-            }
-
-            button.addEventListener("click", () => {
-                const isHidden = container.classList.contains("hidden");
-
-                if (isHidden) {
-                    container.classList.remove("hidden");
-                    button.textContent = "Toque para fechar";
-                    localStorage.setItem(TOGGLE_STORAGE_KEY, "true");
-                } else {
-                    container.classList.add("hidden");
-                    button.textContent = "Toque para ver";
-                    localStorage.setItem(TOGGLE_STORAGE_KEY, "false");
-                }
-            });
+            updateSelectedNumbers();
+            checkAvailableNumbers();
         });
     </script>
 </x-layout.sortition>

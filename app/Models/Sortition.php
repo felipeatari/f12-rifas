@@ -24,6 +24,6 @@ class Sortition extends Model
 
     public function numbers(): HasMany
     {
-        return $this->hasMany(Number::class);
+        return $this->hasMany(Number::class)->where('status', 'available');
     }
 }
