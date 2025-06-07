@@ -23,6 +23,8 @@ services:
         depends_on:
             - mysql
             - redis
+        networks:
+            - f12net
 
     mysql:
         image: mysql:8.0
@@ -37,6 +39,8 @@ services:
             - mysql-data:/var/lib/mysql
         ports:
             - "3306:3306"
+        networks:
+            - f12net
 
     redis:
         image: redis:7
@@ -53,6 +57,8 @@ services:
             interval: 10s
             timeout: 5s
             retries: 3
+        networks:
+            - f12net
 
     certbot:
         image: certbot/certbot
@@ -65,7 +71,13 @@ services:
             "certbot certonly --webroot -w /var/www/html/public
             --email mr.robot.felipe@gmail.com --agree-tos --no-eff-email
             -d f12rifas.com.br --rsa-key-size 4096 --force-renewal"
+        networks:
+            - f12net
 
 volumes:
     mysql-data:
     redis-data:
+
+networks:
+  f12net:
+    driver: bridge
