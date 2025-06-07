@@ -14,14 +14,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/termos-de-uso', [HomeController::class, 'termOfUse'])->name('home.term-of-use');
 Route::get('/politica-de-privacidade', [HomeController::class, 'privacyPolicy'])->name('home.privacy-policy');
 Route::get('/sorteio/{slug}', [SortitionController::class, 'show'])->name('sortition.show');
-Route::get('/teste', function() {
-    // Redis::connection('reservation')->set('teste_persistencia', 'funciona2', 60);
-    // Redis::connection('reservation')->setex('teste_persistencia', 60,'funciona3');
-    // dd(Redis::connection('reservation')->get('teste_persistencia'));
-
-    // Cache::add('teste', 'ok');
-});
-
+Route::post('/sorteio/checkout', [SortitionController::class, 'checkout'])->name('sortition.checkout');
 
 Route::middleware('guest')->group(function($route) {
     Route::get('/login', [AccountController::class, 'login'])->name('login');

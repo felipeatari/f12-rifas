@@ -41,7 +41,6 @@
                 @endforeach
             </div>
 
-
             <div class="mt-10">
                 <table class="w-full bg-[#0d0d0d] rounded-xl">
                     <thead>
@@ -70,19 +69,23 @@
                 </table>
             </div>
 
-            <form class="w-full mt-5" method="POST" action="{{ route('affiliate.update', $sortition->id) }}"
-                enctype="multipart/form-data">
+            <form class="w-full mt-5" method="POST" action="{{ route('sortition.checkout') }}">
                 @csrf
+                <input type="hidden" name="sortition_id" value="{{ $sortition->id }}" id="sortition_id">
+                {{-- <input type="hidden" name="numbers[]" value="{{ $sortition->id }}" id="numbers"> --}}
+                <div id="hidden-numbers-wrapper"></div>
+
                 <input type="text" name="name" id="name" value="{{ old('name') }}" placeholder="Nome"
                     class="w-full p-2 my-1 text-white border border-[#363333] rounded">
 
                 <input type="text" name="whatsapp" id="whatsapp" value="{{ old('whatsapp') }}"
                     placeholder="WhatsApp" class="w-full p-2 my-1 text-white border border-[#363333] rounded">
 
-                <input type="text" name="cpf" id="cpf" value="{{ old('name') }}" placeholder="CPF"
+                <input type="text" name="cpf" id="cpf" value="{{ old('cpf') }}" placeholder="CPF"
                     class="w-full p-2 mt-1 mb-2 text-white border border-[#363333] rounded">
 
-                <button type="button" onclick="checkAvailableNumbers()"
+                <button
+                    id="check-available-numbers"
                     class="w-full bg-green-500 hover:bg-green-600 text-black text-sm font-bold py-2 rounded-md transition duration-200">
                     Checkout
                 </button>
@@ -93,96 +96,6 @@
     <script>
         // localStorage.clear();
         const STORAGE_KEY = 'selectedNumbers'; // chave global
-
-        function updateSelectedNumbers() {
-            const selectedTd = document.querySelector('#numbers-selected');
-            const amountTd = document.querySelector('#numbers-amount');
-            const subUnTd = document.querySelector('#value-un');
-            const subTotalTd = document.querySelector('#value-total');
-            const price = {{ $sortition->price }};
-            const savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            const savedNumbersLength = savedNumbers.length;
-
-            console.log('updateSelectedNumbers: ', savedNumbers);
-
-            if (savedNumbersLength === 0) {
-                selectedTd.textContent = '000';
-                amountTd.textContent = '0';
-                subUnTd.textContent = 'R$ 0';
-                subTotalTd.textContent = 'R$ 0';
-            } else {
-                const numerosFormatados = savedNumbers
-                    .map(n => n.toString())
-                    .join(', ');
-
-                const subTotal = savedNumbersLength * price;
-
-                selectedTd.textContent = numerosFormatados;
-                amountTd.textContent = savedNumbersLength.toString();
-                subUnTd.textContent = 'R$ ' + price;
-                subTotalTd.textContent = 'R$ ' + subTotal;
-            }
-        }
-
-        function checkAvailableNumbers() {
-            let numbersNotAvailable = ['001','002'];
-            console.log(numbersNotAvailable.length)
-            // let numbersNotAvailable = [];
-            let savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-            const originalSavedNumbers = [...savedNumbers];
-
-            // Remove números que não estão mais disponíveis
-            savedNumbers = savedNumbers.filter(n => !numbersNotAvailable.includes(n));
-            numbersNotSaved = originalSavedNumbers.filter(n => numbersNotAvailable.includes(n));
-
-            console.log('Números válidos no localStorage:', savedNumbers);
-
-            if (numbersNotSaved && numbersNotSaved.length > 0) {
-                let messageAlert = '';
-
-                if (numbersNotAvailable.length == 1) {
-                    messageAlert = `
-                        <p>O número que você havia selecionado não está mais disponíveil: <strong>${numbersNotSaved.map(n => n)}</strong></p>
-                    `;
-                } else {
-                    messageAlert = `
-                        <p>Os seguintes números que você havia selecionado não estão mais disponíveis:</p>
-                        <strong>${numbersNotSaved.map(n => n).join(', ')}</strong>
-                    `;
-                }
-                console.log('Números não válidos no localStorage:', numbersNotSaved);
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Atenção!',
-                    html: messageAlert,
-                    confirmButtonText: 'Entendi',
-                    confirmButtonColor: '#facc15'
-                });
-
-                window.location.reload(true);
-            }
-
-            // Atualiza o localStorage
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNumbers));
-
-            // Atualiza visualmente os botões
-            const numberBoxes = document.querySelectorAll('.number-box');
-            numberBoxes.forEach(box => {
-                const number = box.dataset.number;
-
-                if (savedNumbers.includes(number)) {
-                    box.classList.add('bg-[#facc15]', 'text-black');
-                    box.classList.remove('text-[#facc15]');
-                } else {
-                    box.classList.remove('bg-[#facc15]', 'text-black');
-                    box.classList.add('text-[#facc15]');
-                }
-            });
-
-            // Atualiza a exibição do resumo
-            updateSelectedNumbers();
-        }
 
         document.addEventListener('DOMContentLoaded', function() {
             const numberBoxes = document.querySelectorAll('.number-box');
@@ -214,13 +127,144 @@
                     }
 
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNumbers));
+
                     updateSelectedNumbers();
                 });
             });
-
-            // Atualiza os números ao carregar
-            updateSelectedNumbers();
-            checkAvailableNumbers();
         });
+
+        // function checkAvailableNumbers() {
+        //     let savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+        //     const data = {
+        //         sortition_id: {{ $sortition->id }},
+        //         numbers: savedNumbers
+        //     }
+
+        //     fetch('{{ route('sortition.checkout') }}', {
+        //         method: 'POST',
+        //         body: JSON.stringify(data),
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'X-Requested-With': 'XMLHttpRequest',
+        //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //         },
+        //     })
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         if (response.length > 0) {
+        //             const numbersNotAvailable = response.map(n => String(n)); // normaliza se necessário
+        //             const originalSavedNumbers = [...savedNumbers];
+
+        //             // Remove números indisponíveis
+        //             savedNumbers = savedNumbers.filter(n => !numbersNotAvailable.includes(n));
+        //             const numbersNotSaved = originalSavedNumbers.filter(n => numbersNotAvailable.includes(n));
+
+        //             localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNumbers));
+
+        //             // Atualiza visualmente os botões
+        //             const numberBoxes = document.querySelectorAll('.number-box');
+        //             numberBoxes.forEach(box => {
+        //                 const number = box.dataset.number;
+
+        //                 if (savedNumbers.includes(number)) {
+        //                     box.classList.add('bg-[#facc15]', 'text-black');
+        //                     box.classList.remove('text-[#facc15]');
+        //                 } else {
+        //                     box.classList.remove('bg-[#facc15]', 'text-black');
+        //                     box.classList.add('text-[#facc15]');
+        //                 }
+        //             });
+
+        //             // Atualiza a exibição do resumo
+        //             updateSelectedNumbers();
+
+        //              if (numbersNotSaved && numbersNotSaved.length > 0) {
+        //                 let messageAlert = '';
+
+        //                 if (numbersNotAvailable.length == 1) {
+        //                     messageAlert = `O número ${numbersNotSaved.map(n => n)} não está mais disponíveil.`;
+        //                 } else {
+        //                     messageAlert = `Os números: ${numbersNotSaved.map(n => n).join(', ')}, não estão mais disponíveis.`;
+        //                 }
+
+        //                 alert(messageAlert)
+
+        //                 window.location.reload(true);
+        //             }
+        //         } else {
+        //             checkout(data)
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.error('Erro:', error);
+        //     });
+        // }
+
+        function updateSelectedNumbers() {
+            const selectedTd = document.querySelector('#numbers-selected');
+            const amountTd = document.querySelector('#numbers-amount');
+            const subUnTd = document.querySelector('#value-un');
+            const subTotalTd = document.querySelector('#value-total');
+            const price = {{ $sortition->price }};
+            const savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const savedNumbersLength = savedNumbers.length;
+
+            const wrapper = document.getElementById('hidden-numbers-wrapper');
+
+            if (savedNumbersLength === 0) {
+                selectedTd.textContent = '000';
+                amountTd.textContent = '0';
+                subUnTd.textContent = 'R$ 0';
+                subTotalTd.textContent = 'R$ 0';
+
+                if (numbers) {
+                    numbers.value = ''; // Limpa o campo se não houver números
+                }
+            } else {
+                const numerosFormatados = savedNumbers
+                    .map(n => n.toString())
+                    .join(', ');
+
+                const subTotal = savedNumbersLength * price;
+
+                selectedTd.textContent = numerosFormatados;
+                amountTd.textContent = savedNumbersLength.toString();
+                subUnTd.textContent = 'R$ ' + price;
+                subTotalTd.textContent = 'R$ ' + subTotal;
+
+                wrapper.innerHTML = '';
+
+                savedNumbers.forEach(number => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'numbers[]';
+                    input.value = number;
+                    wrapper.appendChild(input);
+                });
+            }
+        }
+
+        // function checkout(data) {
+        //     fetch('{{ route('sortition.checkout') }}', {
+        //         method: 'POST',
+        //         body: JSON.stringify(data),
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'X-Requested-With': 'XMLHttpRequest',
+        //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //         },
+        //     })
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         console.log('Sucesso:', response);
+        //     })
+        //     .catch(error => {
+        //         console.error('Erro:', error);
+        //     });
+        // }
+
+        // Atualiza os números ao carregar
+        updateSelectedNumbers();
     </script>
 </x-layout.sortition>
