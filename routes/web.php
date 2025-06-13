@@ -13,8 +13,14 @@ use Illuminate\Support\Facades\Redis;
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/termos-de-uso', [HomeController::class, 'termOfUse'])->name('home.term-of-use');
 Route::get('/politica-de-privacidade', [HomeController::class, 'privacyPolicy'])->name('home.privacy-policy');
-Route::get('/sorteio/{slug}', [SortitionController::class, 'show'])->name('sortition.show');
-Route::post('/sorteio/checkout', [SortitionController::class, 'checkout'])->name('sortition.checkout');
+// Route::get('/sorteio/{slug}', [SortitionController::class, 'show'])->name('sortition.show');
+// Route::post('/sorteio/checkout', [SortitionController::class, 'checkout'])->name('sortition.checkout');
+
+Route::prefix('sorteio')->name('sortition.')->group(function() {
+    Route::get('/checkout', [SortitionController::class, 'checkout'])->name('checkout');
+    Route::get('/carregar-numeros', [SortitionController::class, 'loadNumbers'])->name('load-numbers');
+    Route::get('/{slug}', [SortitionController::class, 'show'])->name('show');
+});
 
 Route::middleware('guest')->group(function($route) {
     Route::get('/login', [AccountController::class, 'login'])->name('login');

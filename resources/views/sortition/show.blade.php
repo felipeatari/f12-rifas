@@ -34,8 +34,12 @@
             <div id="numberContainer"
                 class="w-full h-[400px] overflow-y-auto flex flex-wrap justify-center items-start mt-5 py-1 bg-[#0d0d0d] rounded custom-scrollbar">
                 @foreach ($sortition->getNumbers() as $item)
-                    <div class="number-box border border-[#facc15] text-[#facc15] rounded-full min-w-14 h-14 p-2 m-1 flex items-center justify-center font-semibold text-sm cursor-pointer transition-colors duration-200"
-                        data-number="{{ $item->number_str }}">
+                    <div
+                        class="number-box border border-[#facc15] text-[#facc15] rounded-full min-w-14 h-14 p-2 m-1 flex items-center justify-center font-semibold text-sm cursor-pointer transition-colors duration-200"
+                        data-number="{{ $item->number_str }}"
+                        id="number-{{ $item->number_str }}"
+                        onclick="selectNumber('{{ $item->number_str }}')"
+                        >
                         {{ $item->number_str }}
                     </div>
                 @endforeach
@@ -49,12 +53,12 @@
                         </tr>
                         <tr>
                             <th class="text-start pl-4 pt-4 font-semibold">Número(s)</th>
-                            <th class="text-end pr-4 pt-4 font-semibold">Qtd. Números</th>
+                            <th class="text-end pr-4 pt-4 font-semibold">Qtd. Número(s)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text pl-4 pt-1 pb-2" id="numbers-selected"></td>
+                            <td class="text pl-4 pt-1 pb-2 text-[#facc15] text-xs" id="numbers-selected"></td>
                             <td class="text-end pr-4 pt-1 pb-2" id="numbers-amount"></td>
                         </tr>
                         <tr>
@@ -94,21 +98,86 @@
     </div>
 
     <script>
+        let selectedTd = document.querySelector('#numbers-selected')
+        let amountTd = document.querySelector('#numbers-amount')
+        let subUnTd = document.querySelector('#value-un')
+        let subTotalTd = document.querySelector('#value-total')
+        let price = 0
+        let savedNumbers = []
+        let savedNumbersLength = 0
+
+        const selectNumber = (number) => {
+            const numberSelected = document.querySelector(`#number-${number}`)
+
+            if (numberSelected.classList.contains('bg-[#facc15]')) {
+                numberSelected.classList.remove('bg-[#facc15]', 'text-black')
+                numberSelected.classList.add('text-[#facc15]')
+            } else {
+                numberSelected.classList.add('bg-[#facc15]', 'text-black')
+                numberSelected.classList.remove('text-[#facc15]')
+            }
+        }
+
+        const loadNumbers = () => {
+            fetch(`{{ route('sortition.load-numbers') }}?sorteio={{ $sortition->id }}`)
+                .then(response => response.json())
+                .then(response => {
+                    let dataKey = 'sortition{{ $sortition->id }}'
+
+                    if (!dataKey in response) {
+                        return
+                    }
+
+                    let data = response[dataKey]
+
+                    savedNumbers = data.numbersSelected
+                    savedNumbersLength = data.numbersSelectedCount
+
+                    if (savedNumbersLength === 0) {
+                        selectedTd.textContent = ''
+                        amountTd.textContent = '0'
+                        subUnTd.textContent = 'R$ 0'
+                        subTotalTd.textContent = 'R$ 0'
+
+                        return
+                    }
+
+                    const numerosFormatados = savedNumbers
+                        .map(n => n.toString())
+                        .join(', ')
+
+                    const subTotal = savedNumbersLength * price
+
+                    selectedTd.textContent = numerosFormatados
+                    amountTd.textContent = savedNumbersLength.toString()
+                    subUnTd.textContent = 'R$ ' + data.numbersSelectedCount
+                    subTotalTd.textContent = 'R$ ' + subTotal
+
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        }
+
+        loadNumbers()
+    </script>
+
+    {{-- <script>
         // localStorage.clear();
         const STORAGE_KEY = 'selectedNumbers'; // chave global
 
         document.addEventListener('DOMContentLoaded', function() {
             const numberBoxes = document.querySelectorAll('.number-box');
-            const savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            // const savedNumbers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
             // Marcar os que estavam salvos
             numberBoxes.forEach(box => {
                 const number = box.dataset.number;
 
-                if (savedNumbers.includes(number)) {
-                    box.classList.add('bg-[#facc15]', 'text-black');
-                    box.classList.remove('text-[#facc15]');
-                }
+                // if (savedNumbers.includes(number)) {
+                //     box.classList.add('bg-[#facc15]', 'text-black');
+                //     box.classList.remove('text-[#facc15]');
+                // }
 
                 box.addEventListener('click', () => {
                     const index = savedNumbers.indexOf(number);
@@ -126,9 +195,9 @@
                         box.classList.remove('text-[#facc15]');
                     }
 
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNumbers));
+                    // localStorage.setItem(STORAGE_KEY, JSON.stringify(savedNumbers));
 
-                    updateSelectedNumbers();
+                    // updateSelectedNumbers();
                 });
             });
         });
@@ -266,5 +335,5 @@
 
         // Atualiza os números ao carregar
         updateSelectedNumbers();
-    </script>
+    </script> --}}
 </x-layout.sortition>

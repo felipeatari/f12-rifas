@@ -58,4 +58,33 @@ class SortitionController extends Controller
         dd($request->all());
         return response()->json($request->all());
     }
+
+    public function loadNumbers(Request $request)
+    {
+        // $data = [
+        //     'numbersSelected' => ['0001', '0002', '0003'],
+        //     'numbersSelectedCount' => 3,
+        //     'priceUn' => 10,
+        //     'priceTotal' => 30,
+        //     'sortitionId' => 2
+        // ];
+        $data = [
+            'numbersSelected' => [],
+            'numbersSelectedCount' => 0,
+            'priceUn' => 0,
+            'priceTotal' => 0,
+            'sortitionId' => 0
+        ];
+
+        $sortitionId = $request->get('sorteio');
+
+        $datakey = 'sortition' . $sortitionId;
+
+        $data = [$datakey => $data];
+
+        return response()->json($data);
+    }
+
+    public function addNumbers(Request $request)
+    {}
 }
