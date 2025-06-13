@@ -85,7 +85,7 @@ class SortitionController extends Controller
         return response()->json($data);
     }
 
-    // public function addNumbers(Request $request)
-    // {
-    // }
+    public function addNumbers(Request $request)
+    {
+    }
 }
