@@ -12,7 +12,6 @@ services:
       APP_ENV: production
     volumes:
       - ../:/var/www/html
-    #   - ./:/var/www/html
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./nginx/default.conf:/etc/nginx/sites-available/default
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -29,17 +28,17 @@ services:
 
   mysql:
     image: mysql:8.0
-    container_name: mysql-prod
+    container_name: mysql
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: f12_rifas
-      MYSQL_USER: secret
-      MYSQL_PASSWORD: secret
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
       - mysql-data:/var/lib/mysql
-    ports:
-      - "3306:3306"
+    expose:
+      - "3306"
     networks:
       - f12net
     healthcheck:
@@ -50,14 +49,14 @@ services:
 
   redis:
     image: redis:7
-    container_name: redis-prod
+    container_name: redis
     restart: unless-stopped
     volumes:
       - redis-data:/data
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-    ports:
-      - "6379:6379"
+    expose:
+      - "3306"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
