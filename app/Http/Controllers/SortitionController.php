@@ -86,5 +86,7 @@ class SortitionController extends Controller
     }
 
     public function addNumbers(Request $request)
-    {}
+    {
+        dd('AddNumbers');
+    }
 }
