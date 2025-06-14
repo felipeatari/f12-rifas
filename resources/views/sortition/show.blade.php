@@ -194,41 +194,41 @@
             });
         }
 
-        const checkout = ()=> {
-            fetch('{{ route('sortition.checkout') }}', {
-                method: 'POST',
-                body: JSON.stringify({
-                    numbers: numbersSelected,
-                    sortition_id: '{{ $sortition->id }}'
-                }),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-            })
-            .then(response => response.json())
-            .then(response => {
-                if (response.status === 'error') {
-                    alert(response.message)
+        // const checkout = ()=> {
+        //     fetch('{{ route('sortition.checkout') }}', {
+        //         method: 'POST',
+        //         body: JSON.stringify({
+        //             numbers: numbersSelected,
+        //             sortition_id: '{{ $sortition->id }}'
+        //         }),
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'X-Requested-With': 'XMLHttpRequest',
+        //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //         },
+        //     })
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         if (response.status === 'error') {
+        //             alert(response.message)
 
-                    return
-                }
+        //             return
+        //         }
 
-                if (response.status === 'warning') {
-                    alert(response.message)
+        //         if (response.status === 'warning') {
+        //             alert(response.message)
 
-                    window.location.reload(true)
+        //             window.location.reload(true)
 
-                    return
-                }
+        //             return
+        //         }
 
-                console.log(response.data)
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-            })
-        }
+        //         console.log(response.data)
+        //     })
+        //     .catch(error => {
+        //         console.error('Erro:', error);
+        //     })
+        // }
 
         const cleanSessionNumbers = ()=> {
             fetch('{{ route('sortition.clean-numbers-selected') }}')
