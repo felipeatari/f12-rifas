@@ -1,25 +1,25 @@
 @if(session('success'))
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Sucesso!',
-            text: '{{ session('success') }}',
-        });
-    })
-</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire('Sucesso!', "{!! session('success') !!}", 'success');
+        })
+    </script>
 @endif
 
 @if(session('error'))
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Erro!',
-            text: '{{ session('error') }}',
-        });
-    })
-</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire('Erro!', "{!! session('error') !!}", 'error');
+        })
+    </script>
+@endif
+
+@if(session('warning'))
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire('Atenção!', "{!! session('warning') !!}", 'warning');
+        })
+    </script>
 @endif
 
 @if ($errors->any())

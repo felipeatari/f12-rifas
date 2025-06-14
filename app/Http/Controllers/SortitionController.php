@@ -29,54 +29,81 @@ class SortitionController extends Controller
     public function checkout(Request $request)
     {
         $sortitionId = $request->input('sortition_id');
-        $numbers = is_array($request->numbers) ? $request->numbers : [];
+        $numbersExists = is_array($request->numbers) ? $request->numbers : [];
 
-        $unavailableNumbers = Number::query()
-                        ->where('sortition_id', $sortitionId)
-                        ->whereIn('number_str', $numbers)
-                        ->where('status', '!=', 'available')
-                        ->get();
+        if (! $sortitionId) {
+            return redirect()->back()->with('error', 'Informe o ID do sorteio.')->withInput();
+        }
 
-        $numbers = [];
+        if (! $numbersExists) {
+            return redirect()->back()->with('error', 'Selecione pelo menos um número.')->withInput();
+        }
 
-        if ($unavailableNumbers) {
-            foreach ($unavailableNumbers as $value):
-                $numbers[] = $value->number_str;
+        $unavailableNumbersExists = Number::query()
+            ->select(['id', 'number', 'number_str'])
+            ->where('sortition_id', $sortitionId)
+            ->whereIn('number_str', $numbersExists)
+            ->where('status', '!=', 'available')
+            ->get()
+            ->toArray();
+
+        $unavailableNumbers = [];
+
+        if ($unavailableNumbersExists) {
+            foreach ($unavailableNumbersExists as $unavailableNumber):
+                $unavailableNumbers[] = $unavailableNumber['number_str'];
             endforeach;
         }
 
-        if ($numbers) {
-            if (count($numbers) === 1) {
-                $message = 'Número indisponível: ' . $numbers[0];
+        $mountSessionNumbers = [];
+        foreach ($numbersExists as $value):
+            if (in_array($value, $unavailableNumbers)) continue;
+
+            $mountSessionNumbers[] = $value;
+        endforeach;
+
+        session()->put('numbers_selected', $mountSessionNumbers);
+
+        if ($unavailableNumbers) {
+            if (count($unavailableNumbers) === 1) {
+                $message = 'Número indisponível: ' . $unavailableNumbers[0];
             } else {
-                $message = 'Números indisponivels: ' . implode(',', $numbers);
+                $message = 'Números indisponivels: ' . implode(',', $unavailableNumbers);
             }
 
-            return redirect()->back()->with('error', $message)->withInput();
+            $message .= "<br>Você pode continuar selecionando ou clicar em 'checkout' para continuar.";
+
+            return redirect()->back()->with('warning', $message)->withInput();
         }
 
-        dd($request->all());
-        return response()->json($request->all());
+        session()->forget('numbers_selected');
+
+        return redirect()->back()->with('success', $request->name . ', pedido realizado com sucesso! <br> Verifique seu WhatsApp')->withInput();
+
+        // return response()->json([
+        //     'status' => 'success',
+        //     'code' => 201,
+        //      'data' => [
+        //         'chave_aleatoria' => 'b7c9e8fa-21d4-4ef6-91a2-7f81c77e3c4e',
+        //         'qr_code' => '00020126580014BR.GOV.BCB.PIX0136b7c9e8fa-21d4-4ef6-91a2-7f81c77e3c4e5204000053039865802BR5913Nome do Cliente6009SAO PAULO62070503***6304A1B2',
+        //         'message' => 'Seus números foram reservados com sucesso! O pagamento deve ser realizado em até 10 minutos. Após esse prazo, os números serão liberados automaticamente.'
+        //     ]
+        // ]);
     }
 
     public function loadNumbers(Request $request)
     {
-        // $data = [
-        //     'numbersSelected' => ['0001', '0002', '0003'],
-        //     'numbersSelectedCount' => 3,
-        //     'priceUn' => 10,
-        //     'priceTotal' => 30,
-        //     'sortitionId' => 2
-        // ];
-        $data = [
-            'numbersSelected' => [],
-            'numbersSelectedCount' => 0,
-            'priceUn' => 0,
-            'priceTotal' => 0,
-            'sortitionId' => 0
-        ];
+        $data = session()->get('numbers_selected') ?? [ 'numbers_selected' => [] ];
 
         $sortitionId = $request->get('sorteio');
+
+        if (! $sortitionId) {
+            return response()->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Informe o ID do sorteio.',
+            ]);
+        }
 
         $datakey = 'sortition' . $sortitionId;
 
@@ -85,7 +112,10 @@ class SortitionController extends Controller
         return response()->json($data);
     }
 
-    // public function addNumbers(Request $request)
-    // {
-    // }
+    public function cleanNumbersSelected()
+    {
+        session()->forget('numbers_selected');
+
+        return response()->json(['status' => 'success']);
+    }
 }

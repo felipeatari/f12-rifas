@@ -15,7 +15,8 @@ Route::get('/termos-de-uso', [HomeController::class, 'termOfUse'])->name('home.t
 Route::get('/politica-de-privacidade', [HomeController::class, 'privacyPolicy'])->name('home.privacy-policy');
 
 Route::prefix('sorteio')->name('sortition.')->group(function() {
-    Route::get('/checkout', [SortitionController::class, 'checkout'])->name('checkout');
+    Route::post('/checkout', [SortitionController::class, 'checkout'])->name('checkout');
+    Route::get('/clean-numbers-selected', [SortitionController::class, 'cleanNumbersSelected'])->name('clean-numbers-selected');
     Route::get('/carregar-numeros', [SortitionController::class, 'loadNumbers'])->name('load-numbers');
     Route::get('/{slug}', [SortitionController::class, 'show'])->name('show');
 });
