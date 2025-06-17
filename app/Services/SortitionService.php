@@ -11,7 +11,9 @@ class SortitionService extends Service
 {
     public function __construct(
         protected SortitionRepository $sortitionRepository
-    ) {}
+    )
+    {
+    }
 
     protected function repository(): mixed
     {
@@ -29,8 +31,10 @@ class SortitionService extends Service
             }
 
             return $data;
-        } catch (\Exception $exception) {
-            return $this->exception($exception, 'Sorteios não encontrados.');
+        } catch (ModelNotFoundException $exception) {
+            return $this->exception($exception, 'Sorteio não encontrado.');
+        } catch (Exception $exception) {
+            return $this->exception($exception);
         }
     }
 
@@ -47,7 +51,7 @@ class SortitionService extends Service
         } catch (ModelNotFoundException $exception) {
             return $this->exception($exception, 'Sorteio não encontrado.');
         } catch (Exception $exception) {
-            return $this->exception($exception, 'Sorteio não encontrado.');
+            return $this->exception($exception);
         }
     }
 
@@ -56,8 +60,10 @@ class SortitionService extends Service
         try {
             $data = $this->sortitionRepository->getById($id);
             return SortitionDTO::fromModel($data);
-        } catch (\Exception $exception) {
+        } catch (ModelNotFoundException $exception) {
             return $this->exception($exception, 'Sorteio não encontrado.');
+        } catch (Exception $exception) {
+            return $this->exception($exception);
         }
     }
 
@@ -67,7 +73,9 @@ class SortitionService extends Service
             $item = $this->sortitionRepository->create($data);
             $this->code = 201;
             return SortitionDTO::fromModel($item);
-        } catch (\Exception $exception) {
+        } catch (ModelNotFoundException $exception) {
+            return $this->exception($exception, 'Sorteio não encontrado.');
+        } catch (Exception $exception) {
             return $this->exception($exception);
         }
     }
@@ -77,8 +85,10 @@ class SortitionService extends Service
         try {
             $item = $this->sortitionRepository->update($id, $data);
             return SortitionDTO::fromModel($item);
-        } catch (\Exception $exception) {
+        } catch (ModelNotFoundException $exception) {
             return $this->exception($exception, 'Sorteio não encontrado.');
+        } catch (Exception $exception) {
+            return $this->exception($exception);
         }
     }
 
@@ -87,8 +97,10 @@ class SortitionService extends Service
         try {
             $this->sortitionRepository->delete($id);
             return true;
-        } catch (\Exception $exception) {
+        } catch (ModelNotFoundException $exception) {
             return $this->exception($exception, 'Sorteio não encontrado.');
+        } catch (Exception $exception) {
+            return $this->exception($exception);
         }
     }
 }

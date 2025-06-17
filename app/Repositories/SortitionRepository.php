@@ -44,7 +44,7 @@ class SortitionRepository
 
             if (! $columns) $columns = ['*'];
 
-            $data = $query->paginate($perPage, $columns);
+            $data = $query->paginate($perPage, $columns, 'pagina');
 
             if (! $data->count()) throw new ModelNotFoundException('Not Found.', 404);
 
@@ -108,7 +108,6 @@ class SortitionRepository
 
     public function update($id, array $data)
     {
-
         DB::beginTransaction();
 
         try {

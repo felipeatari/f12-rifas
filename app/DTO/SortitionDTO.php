@@ -32,8 +32,6 @@ class SortitionDTO
         $this->status = $data['status'];
         $this->image = $data['image'];
 
-        // dd($data->numbers()->query()->where('status', 'available')->get());
-
         $this->setNumbers($data['numbers']);
     }
 

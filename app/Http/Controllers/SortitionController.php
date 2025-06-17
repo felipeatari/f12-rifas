@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Number;
 use App\Models\Sortition;
+use App\Services\EfiPixService;
 use App\Services\SortitionService;
 use Illuminate\Http\Request;
 
 class SortitionController extends Controller
 {
     public function __construct(
-        protected SortitionService $sortition
+        protected EfiPixService $efiPixService,
+        protected SortitionService $sortition,
     )
     {
     }
@@ -78,17 +80,24 @@ class SortitionController extends Controller
 
         session()->forget('numbers_selected');
 
-        return redirect()->back()->with('success', $request->name . ', pedido realizado com sucesso! <br> Verifique seu WhatsApp')->withInput();
+        $body = [
+            'calendario' => [
+                'expiracao' => 3600 // Charge lifetime, specified in seconds from creation date
+            ],
+            'devedor' => [
+                'cpf' => '29804932369',
+                'nome' => 'Francisco da Silva'
+            ],
+            'valor' => [
+                'original' => '0.01'
+            ],
+            'chave' => config('efi.pix_key'), // Pix key registered in the authenticated Efí account
+            'solicitacaoPagador' => 'Cobrança da compra de números.',
+        ];
 
-        // return response()->json([
-        //     'status' => 'success',
-        //     'code' => 201,
-        //      'data' => [
-        //         'chave_aleatoria' => 'b7c9e8fa-21d4-4ef6-91a2-7f81c77e3c4e',
-        //         'qr_code' => '00020126580014BR.GOV.BCB.PIX0136b7c9e8fa-21d4-4ef6-91a2-7f81c77e3c4e5204000053039865802BR5913Nome do Cliente6009SAO PAULO62070503***6304A1B2',
-        //         'message' => 'Seus números foram reservados com sucesso! O pagamento deve ser realizado em até 10 minutos. Após esse prazo, os números serão liberados automaticamente.'
-        //     ]
-        // ]);
+        // $createBilling = $this->efiPixService->createBilling($body);
+
+        return redirect()->back()->with('success', $request->name . ', pedido realizado com sucesso! <br> Verifique seu WhatsApp')->withInput();
     }
 
     public function loadNumbers(Request $request)
@@ -117,5 +126,24 @@ class SortitionController extends Controller
         session()->forget('numbers_selected');
 
         return response()->json(['status' => 'success']);
+    }
+
+    public function index(Request $request)
+    {
+        return $this->sortition->getAll();
+    }
+
+    public function showId($id)
+    {
+        $sortition = $this->sortition->getById($id);
+
+        if ($this->sortition->status() === 'error') {
+            return response()->json([
+                'code' => $sortition->code(),
+                'message' => $sortition->message(),
+            ]);
+        }
+
+        return response()->json($sortition);
     }
 }

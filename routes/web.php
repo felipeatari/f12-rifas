@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AffiliateController;
+use App\Http\Controllers\EfiPixController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SortitionController;
 use Illuminate\Support\Facades\Cache;
