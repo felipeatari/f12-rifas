@@ -69,19 +69,19 @@ services:
     networks:
       - f12net
 
-#   certbot:
-#     image: certbot/certbot
-#     container_name: certbot
-#     volumes:
-#       - ../:/var/www/html
-#       - ./certificates:/etc/letsencrypt
-#     entrypoint: "/bin/sh -c"
-#     command: >
-#       "certbot certonly --webroot -w /var/www/html/public
-#       --email mr.robot.felipe@gmail.com --agree-tos --no-eff-email
-#       -d f12rifas.com.br --rsa-key-size 4096 --force-renewal"
-#     networks:
-#       - f12net
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ../:/var/www/html
+      - ./certificates:/etc/letsencrypt
+    entrypoint: "/bin/sh -c"
+    command: >
+      "certbot certonly --webroot -w /var/www/html/public
+      --email mr.robot.felipe@gmail.com --agree-tos --no-eff-email
+      -d f12rifas.com.br --rsa-key-size 4096 --force-renewal"
+    networks:
+      - f12net
 
 volumes:
   mysql-data:
