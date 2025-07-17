@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/icons/favicon.ico') }}">
-    <title>Sorteio #{{ $sortitionId }}</title>
+    <title>Sorteio Nº #{{ $sortitionId }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         function toggleMobileMenu() {
@@ -23,17 +23,6 @@
         {{ $slot }}
     </main>
     <!-- Conteúdo principal -->
-
-    {{-- @php
-        $message = 'Número indisponível: 0001';
-        $message .= "<br>Você pode continuar selecionando ou clicar em 'checkout' para continuar.";
-    @endphp
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            Swal.fire('Pronto!', "{!! $message !!}", 'success');
-        })
-    </script> --}}
 
     <x-alert />
 

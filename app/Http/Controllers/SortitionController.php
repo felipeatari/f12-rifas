@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CheckoutRequest;
 use App\Models\Number;
 use App\Models\Sortition;
 use App\Services\EfiPixService;
@@ -28,13 +29,19 @@ class SortitionController extends Controller
         ]);
     }
 
-    public function checkout(Request $request)
+    public function checkout(CheckoutRequest $request)
     {
+        $data = $request->validated();
         $sortitionId = $request->input('sortition_id');
+        $sortitionPrice = $request->input('sortition_price');
         $numbersExists = is_array($request->numbers) ? $request->numbers : [];
 
         if (! $sortitionId) {
             return redirect()->back()->with('error', 'Informe o ID do sorteio.')->withInput();
+        }
+
+        if (! $sortitionPrice) {
+            return redirect()->back()->with('error', 'O valor do sorteio deve ser informado.')->withInput();
         }
 
         if (! $numbersExists) {
@@ -80,24 +87,35 @@ class SortitionController extends Controller
 
         session()->forget('numbers_selected');
 
+        $numbersQtd = count($numbersExists);
+        $priceUn = $sortitionPrice;
+        $priceTotal = $sortitionPrice;
+
+        if ($numbersQtd > 1) {
+            $priceTotal *= $numbersQtd;
+        }
+
         $body = [
             'calendario' => [
-                'expiracao' => 3600 // Charge lifetime, specified in seconds from creation date
+                'expiracao' => 600 // Expira em 10 min
             ],
             'devedor' => [
-                'cpf' => '29804932369',
-                'nome' => 'Francisco da Silva'
+                'cpf' => $data['cpf'],
+                'nome' => $data['name']
             ],
             'valor' => [
-                'original' => '0.01'
+                'original' => $priceTotal
             ],
-            'chave' => config('efi.pix_key'), // Pix key registered in the authenticated Efí account
+            'chave' => config('efi.pix_key'), // Chave Pix
             'solicitacaoPagador' => 'Cobrança da compra de números.',
         ];
 
+        // dd($body);
+
         // $createBilling = $this->efiPixService->createBilling($body);
 
-        return redirect()->back()->with('success', $request->name . ', pedido realizado com sucesso! <br> Verifique seu WhatsApp')->withInput();
+        return redirect()->back()->with('success', $request->name . ', Números reservados com sucesso! <br> Verifique seu WhatsApp')->withInput();
+        // return redirect()->back()->with('success', $request->name . ', pedido realizado com sucesso! <br> Verifique seu WhatsApp')->withInput();
     }
 
     public function loadNumbers(Request $request)
@@ -116,7 +134,7 @@ class SortitionController extends Controller
 
         $datakey = 'sortition' . $sortitionId;
 
-        $data = [$datakey => $data];
+        $data = [ $datakey => $data ];
 
         return response()->json($data);
     }

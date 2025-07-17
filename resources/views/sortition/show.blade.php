@@ -76,24 +76,26 @@
             <form class="w-full mt-5" method="POST" action="{{ route('sortition.checkout') }}">
                 @csrf
                 <input type="hidden" name="sortition_id" value="{{ $sortition->id }}" id="sortition_id">
+                <input type="hidden" name="sortition_price" value="{{ $sortition->price }}" id="sortition_price">
                 <div id="numbers"></div>
 
-                <input required type="text" name="name" id="name" value="{{ old('name') }}" placeholder="Nome"
+                <input type="text" name="name" id="name" value="{{ old('name') }}" placeholder="Nome"
                     class="w-full p-2 my-1 text-white border border-[#363333] rounded">
 
-                <input required type="text" name="whatsapp" id="whatsapp" value="{{ old('whatsapp') }}"
+                <input type="text" name="cpf" id="cpf" value="{{ old('cpf') }}" placeholder="CPF"
+                    class="w-full p-2 mt-1 text-white border border-[#363333] rounded">
+
+                <input type="text" name="whatsapp" id="whatsapp" value="{{ old('whatsapp') }}"
                     placeholder="WhatsApp" class="w-full p-2 my-1 text-white border border-[#363333] rounded">
 
-                <input required type="text" name="cpf" id="cpf" value="{{ old('cpf') }}" placeholder="CPF"
-                    class="w-full p-2 mt-1 mb-2 text-white border border-[#363333] rounded">
+                <input type="text" name="whatsapp_confirmation" id="whatsapp_confirmation" value="{{ old('whatsapp_confirmation') }}"
+                    placeholder="Confirmar WhatsApp" class="w-full p-2 my-1 mb-2 text-white border border-[#363333] rounded">
 
                 <button
                     id="check-available-numbers"
                     class="w-full bg-green-500 hover:bg-green-600 text-black text-sm font-bold py-2 rounded-md transition duration-200"
-                    {{-- type="button"
-                    onclick="checkout()" --}}
                 >
-                    Checkout
+                    Reservar Números
                 </button>
             </form>
         </div>
@@ -112,6 +114,11 @@
             fetch(`{{ route('sortition.load-numbers') }}?sorteio={{ $sortition->id }}`)
                 .then(response => response.json())
                 .then(response => {
+                    selectedTd.textContent = ''
+                    amountTd.textContent = '0'
+                    subUnTd.textContent = 'R$ 0'
+                    subTotalTd.textContent = 'R$ 0'
+
                     if (response.status === 'error') {
                         alert(response.message)
 
@@ -193,42 +200,6 @@
                 container.appendChild(input);
             });
         }
-
-        // const checkout = ()=> {
-        //     fetch('{{ route('sortition.checkout') }}', {
-        //         method: 'POST',
-        //         body: JSON.stringify({
-        //             numbers: numbersSelected,
-        //             sortition_id: '{{ $sortition->id }}'
-        //         }),
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'X-Requested-With': 'XMLHttpRequest',
-        //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        //         },
-        //     })
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         if (response.status === 'error') {
-        //             alert(response.message)
-
-        //             return
-        //         }
-
-        //         if (response.status === 'warning') {
-        //             alert(response.message)
-
-        //             window.location.reload(true)
-
-        //             return
-        //         }
-
-        //         console.log(response.data)
-        //     })
-        //     .catch(error => {
-        //         console.error('Erro:', error);
-        //     })
-        // }
 
         const cleanSessionNumbers = ()=> {
             fetch('{{ route('sortition.clean-numbers-selected') }}')
