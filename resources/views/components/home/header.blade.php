@@ -28,23 +28,32 @@
         </div>
 
         <!-- Mobile Header -->
-        <div class="w-full flex flex-col items-center md:hidden py-4 relative">
+        <div class="w-full flex justify-between items-center md:hidden py-4 relative">
             <!-- Logo -->
-            <div class="w-full max-w-[350px] text-4xl font-bold text-yellow-400">
+            <div class="w-full max-w-[200px] text-4xl font-bold text-yellow-400">
                 <img class="w-full" src="{{ asset('assets/images/logo.png') }}" alt="Logo">
             </div>
             <!-- Logo -->
 
-            <div class="w-full max-w-[350px] flex justify-center mt-8 gap-4">
-                <button onclick="toggleMobileMenu()"
-                    class="w-full text-white border border-yellow-500 rounded-lg px-4 py-2">Menu</button>
+            <div class="w-full max-w-[350px] flex justify-end gap-4">
+                <button
+                    onclick="toggleMobileMenu()"
+                    class="w-[80px] text-white border border-yellow-500 rounded-lg px-4 py-2"
+                >
+                    Menu
+                </button>
                 @if (Auth::check())
                     <a href="{{ route('painel') }}"
-                        class="w-full bg-yellow-500 hover:bg-yellow-600 text-black text-center font-semibold py-2 px-4 rounded-lg transition">Minha
-                        Conta</a>
+                        class="w-[80px] bg-yellow-500 hover:bg-yellow-600 text-black text-center font-semibold py-2 px-4 rounded-lg transition"
+                    >
+                        Minha Conta
+                    </a>
                 @else
                     <a href="{{ route('login') }}"
-                        class="w-full bg-yellow-500 hover:bg-yellow-600 text-black text-center font-semibold py-2 px-4 rounded-lg transition">Acessar</a>
+                        class="w-[80px] bg-yellow-500 hover:bg-yellow-600 text-black text-center font-semibold py-2 px-4 rounded-lg transition"
+                    >
+                        Acessar
+                    </a>
                 @endif
             </div>
             <div id="mobileMenu"
