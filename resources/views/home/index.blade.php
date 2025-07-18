@@ -2,15 +2,14 @@
     <!-- Home Banner -->
     <div id="home" class="bg-[#0a0a0a] text-center w-full h-screen1">
         <section class="w-full h-full flex flex-col justify-around">
-            {{-- <img class="" src="{{ asset('assets/images/banner-desktop-1.png') }}" alt=""> --}}
             <img
-                src="{{ asset('assets/images/banner-desktop-1.png') }}"
+                src="{{ asset('assets/images/banner-desktop-1.webp') }}"
                 alt="Banner Desktop"
                 class="hidden md:block w-full h-auto"
             >
 
             <img
-                src="{{ asset('assets/images/banner-mobile-1.png') }}"
+                src="{{ asset('assets/images/banner-mobile-1.webp') }}"
                 alt="Banner Mobile"
                 class="block md:hidden w-full h-auto"
             >
