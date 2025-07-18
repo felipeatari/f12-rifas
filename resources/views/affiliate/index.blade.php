@@ -71,7 +71,7 @@
                             @endforelse
                         </tbody>
 
-                        @if ($sortitions and $sortitions->hasPages())
+                        @if ($sortitions)
                             <tfoot>
                                 <tr>
                                     <td class="px-3 py-3" colspan="2">
