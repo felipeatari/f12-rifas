@@ -19,7 +19,7 @@
 </head>
 
 <body class="bg-[#0a0a0a] text-white">
-    <section class="w-full h-screen flex items-center justify-center">
+    <section class="w-full flex items-center justify-center">
         {{ $slot }}
     </section>
 </body>

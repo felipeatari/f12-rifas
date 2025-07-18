@@ -1,5 +1,5 @@
 <x-layout.account>
-    <div class="flex items-center justify-center px-4">
+    <div class="flex items-center justify-center px-4 pt-20">
         <div class="w-full max-w-sm bg-[#111111] text-white rounded-lg p-6 shadow-md">
             <a href="{{ route('home.index') }}" class="text-sm text-yellow-400 hover:underline mb-4 inline-block">← Voltar para o site</a>
 
