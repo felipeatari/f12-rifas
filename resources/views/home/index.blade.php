@@ -29,7 +29,7 @@
                 class="h-full w-auto object-cover"
             >
 
-            <div class="absolute top-0 w-full flex flex-col items-center justify-evenly px-4">
+            <div class="absolute top-0 w-full flex flex-col items-center justify-evenly pt-32 pb-4">
                 <h1 class="text-2xl font-bold text-yellow-400">Vai fazer uma rifa?</h1><br>
                 <p class="text-xl font-semibold text-center text-gray-300">
                     Com a <span class="text-yellow-400">F12 Rifas</span>, você cria e gerencia seus sorteios de forma simples, rápida e objetiva. E o melhor: <span class="text-yellow-400">totalmente grátis!</span><br><br>
