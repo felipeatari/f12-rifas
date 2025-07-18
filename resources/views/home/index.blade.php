@@ -1,7 +1,7 @@
 <x-layout.app>
     <!-- Home Banner -->
-    <div id="home" class="bg-[#0a0a0a] w-full h-[screen]">
-        <section class="hidden md:block w-full h-full relative">
+    <div id="home" class="bg-[#0a0a0a] w-full">
+        <section class="hidden md:block w-full h-[900px] relative">
             <img
                 src="{{ asset('assets/images/banner-desktop-1.webp') }}"
                 alt="Banner Desktop 1"
@@ -22,7 +22,7 @@
             </div>
         </section>
 
-        <section class="block md:hidden w-full h-full relative text-center">
+        <section class="block md:hidden w-full h-screen relative text-center">
             <img
                 src="{{ asset('assets/images/banner-mobile-1.webp') }}"
                 alt="Banner Mobile"
