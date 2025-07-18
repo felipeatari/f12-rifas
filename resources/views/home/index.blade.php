@@ -1,35 +1,46 @@
 <x-layout.app>
     <!-- Home Banner -->
-    <div id="home" class="bg-[#0a0a0a] text-center w-full h-screen1">
-        <section class="w-full h-full flex flex-col justify-around">
+    <div id="home" class="bg-[#0a0a0a] w-full h-[screen]">
+        <section class="hidden md:block w-full h-full relative">
             <img
                 src="{{ asset('assets/images/banner-desktop-1.webp') }}"
-                alt="Banner Desktop"
-                class="hidden md:block w-full h-auto"
+                alt="Banner Desktop 1"
+                class="h-full w-auto object-cover"
             >
 
-            <img
-                src="{{ asset('assets/images/banner-mobile-1.webp') }}"
-                alt="Banner Mobile"
-                class="block md:hidden w-full h-auto"
-            >
-            {{-- <div class="w-full flex flex-col items-center px-4">
-                <div class="text-center mb-10">
-                    <h1 class="text-6xl font-extrabold text-yellow-400">Vai fazer uma rifa?</h1>
-                </div>
-                <p class="max-w-[700px] text-xl text-gray-300 mt-10">
-                    Com a <span class="font-bold text-yellow-400">F12 Rifas</span>, você cria e gerencia seus sorteios de forma simples, rápida e objetiva. E o melhor: <span class="font-bold text-yellow-400">totalmente grátis!</span> <br><br>
-                    <span class="font-bold">Cadastre rifas, acompanhe as vendas e receba via Pix, sem complicação.</span>
+            <div class="absolute inset-0 w-full flex flex-col justify-evenly items-start px-4s pl-12">
+                <h1 class="text-7xl font-bold text-yellow-400">Vai fazer uma rifa?</h1>
+                <p class="max-w-[700px] text-2xl font-semibold text-gray-300">
+                    Com a <span class="text-yellow-400">F12 Rifas</span>, você cria e gerencia seus sorteios de forma simples, rápida e objetiva. E o melhor: <span class="text-yellow-400">totalmente grátis!</span> <br><br>
+                    <span class="text-xl">Cadastre rifas, acompanhe as vendas e receba via Pix, sem complicação.</span>
                 </p>
-            </div>
-
-            <div class="w-full flex justify-center">
                 <a href="{{ route('register') }}"
-                    class="w-[250px] md:w-[400px] bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg text-lg transition"
+                    class="w-[200px] md:w-[400px] bg-yellow-500 hover:bg-yellow-600 text-black text-center font-bold py-3 px-6 rounded-lg text-lg transition"
                 >
                     Cadastre-se
                 </a>
-            </div> --}}
+            </div>
+        </section>
+
+        <section class="block md:hidden w-full h-full relative text-center">
+            <img
+                src="{{ asset('assets/images/banner-mobile-1.webp') }}"
+                alt="Banner Mobile"
+                class="w-full h-auto"
+            >
+
+            <div class="absolute top-0 w-full flex flex-col items-center justify-evenly px-4">
+                <h1 class="text-2xl font-bold text-yellow-400">Vai fazer uma rifa?</h1><br>
+                <p class="text-xl text-center text-gray-300">
+                    Com a <span class="text-yellow-400">F12 Rifas</span>, você cria e gerencia seus sorteios de forma simples, rápida e objetiva. E o melhor: <span class="text-yellow-400">totalmente grátis!</span><br><br>
+                    <span class="text-xs font-bold">Cadastre rifas, acompanhe as vendas e receba via Pix, sem complicação.</span>
+                </p>
+            </div>
+            <a href="{{ route('register') }}"
+                class="absolute bottom-2 left-1/2 -translate-x-1/2 w-[200px] md:w-[400px] bg-yellow-500 hover:bg-yellow-600 text-black text-center font-bold py-3 px-6 rounded-lg text-lg transition"
+            >
+                Cadastre-se
+            </a>
         </section>
     </div>
     <!-- Home Banner -->

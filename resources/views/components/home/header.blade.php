@@ -30,15 +30,15 @@
         <!-- Mobile Header -->
         <div class="w-full flex justify-between items-center md:hidden py-4 relative">
             <!-- Logo -->
-            <div class="w-full max-w-[200px] text-4xl font-bold text-yellow-400">
+            <div class="w-full max-w-[150px] text-4xl font-bold text-yellow-400">
                 <img class="w-full" src="{{ asset('assets/images/logo.png') }}" alt="Logo">
             </div>
             <!-- Logo -->
 
-            <div class="w-full max-w-[350px] flex justify-end gap-4">
+            <div class="w-full max-w-[350px] flex justify-end">
                 <button
                     onclick="toggleMobileMenu()"
-                    class="w-[80px] text-white border border-yellow-500 rounded-lg px-4 py-2"
+                    class="w-[80px] text-white border border-yellow-500 rounded-lg px-4 py-2 mr-2"
                 >
                     Menu
                 </button>
