@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CheckoutRequest;
 use App\Models\Number;
+use App\Models\Sale;
 use App\Models\Sortition;
+use App\Models\User;
 use App\Services\EfiPixService;
 use App\Services\SortitionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 class SortitionController extends Controller
 {
@@ -22,7 +25,7 @@ class SortitionController extends Controller
     {
         $sortition = $this->sortition->getOne(['slug' => $slug]);
 
-        if (!$sortition) return redirect()->route('home.index');
+        if ($this->sortition->status() === 'error') return redirect()->route('home.index');
 
         return view('sortition.show', [
             'sortition' => $sortition,
@@ -33,11 +36,18 @@ class SortitionController extends Controller
     {
         $data = $request->validated();
         $sortitionId = $request->input('sortition_id');
+        $sortitionSlug = $request->input('sortition_slug');
         $sortitionPrice = $request->input('sortition_price');
         $numbersExists = is_array($request->numbers) ? $request->numbers : [];
 
+        $cpf = onlyNumbers($data['cpf']);
+
         if (! $sortitionId) {
             return redirect()->back()->with('error', 'Informe o ID do sorteio.')->withInput();
+        }
+
+        if (! $sortitionSlug) {
+            return redirect()->back()->with('error', 'Informe o Slug do sorteio.')->withInput();
         }
 
         if (! $sortitionPrice) {
@@ -45,6 +55,10 @@ class SortitionController extends Controller
         }
 
         if (! $numbersExists) {
+            return redirect()->back()->with('error', 'Selecione pelo menos um número.')->withInput();
+        }
+
+        if (! validateCPF($cpf)) {
             return redirect()->back()->with('error', 'Selecione pelo menos um número.')->withInput();
         }
 
@@ -56,7 +70,9 @@ class SortitionController extends Controller
             ->get()
             ->toArray();
 
-        $unavailableNumbers = [];
+        $unavailableNumbers = []; // Salva números indisponíveis
+        $mountSessionNumbers = []; // Salva os números disponíveis
+        $saveCacheNumbers = [];
 
         if ($unavailableNumbersExists) {
             foreach ($unavailableNumbersExists as $unavailableNumber):
@@ -64,10 +80,20 @@ class SortitionController extends Controller
             endforeach;
         }
 
-        $mountSessionNumbers = [];
         foreach ($numbersExists as $value):
             if (in_array($value, $unavailableNumbers)) continue;
 
+            $number = Number::query()
+                ->select(['id', 'number', 'number_str'])
+                ->where('sortition_id', $sortitionId)
+                ->where('number_str', $value)
+                ->where('status', 'available')
+                ->first();
+
+            $number->status = 'reserved';
+            $number->save();
+
+            $saveCacheNumbers[] = $number->toArray();
             $mountSessionNumbers[] = $value;
         endforeach;
 
@@ -85,6 +111,18 @@ class SortitionController extends Controller
             return redirect()->back()->with('warning', $message)->withInput();
         }
 
+        $expired = now()->addMinutes(15)->timestamp;
+
+        foreach ($saveCacheNumbers as $save):
+            $keyNumber = 'number:' . $save['id'] . $sortitionId;
+
+            Redis::set($keyNumber, json_encode([
+                'number_id' => $save['id'],
+                'sortition_id' => $sortitionId,
+                'expired' => $expired,
+            ]));
+        endforeach;
+
         session()->forget('numbers_selected');
 
         $numbersQtd = count($numbersExists);
@@ -95,27 +133,61 @@ class SortitionController extends Controller
             $priceTotal *= $numbersQtd;
         }
 
+        $original = (string) number_format($priceTotal, 2, '.');
+
         $body = [
             'calendario' => [
-                'expiracao' => 600 // Expira em 10 min
+                'expiracao' => 900 // Expira em 15 min
             ],
             'devedor' => [
-                'cpf' => $data['cpf'],
+                'cpf' => $cpf,
                 'nome' => $data['name']
             ],
             'valor' => [
-                'original' => $priceTotal
+                'original' => $original
             ],
             'chave' => config('efi.pix_key'), // Chave Pix
             'solicitacaoPagador' => 'Cobrança da compra de números.',
         ];
 
-        // dd($body);
+        $createBilling = $this->efiPixService->createBilling($body);
 
-        // $createBilling = $this->efiPixService->createBilling($body);
+        if ($this->efiPixService->status() === 'error') {
+            return redirect()->back()->with('error', 'Falha ao gerar cobrança via Pix. Tente novamente.')->withInput();
+        }
 
-        return redirect()->back()->with('success', $request->name . ', Números reservados com sucesso! <br> Verifique seu WhatsApp')->withInput();
-        // return redirect()->back()->with('success', $request->name . ', pedido realizado com sucesso! <br> Verifique seu WhatsApp')->withInput();
+        $client = User::firstOrCreate(
+            ['whatsapp' => $data['whatsapp']], // condição de busca
+            [
+                'name' => $data['name'],
+                'type' => 'client',
+                'password' => null,
+            ]
+        );
+
+        $sale = Sale::create([
+            'user_id' => $client->id,
+            'sortition_id' => $sortitionId,
+            'numbers' => json_encode($mountSessionNumbers),
+            'total_numbers' => count($mountSessionNumbers),
+            'unit_price' => $priceUn,
+            'total_price' => $priceTotal,
+            'status' => 'paid'
+        ]);
+
+        $key = 'sale:' . $sale->id;
+
+        $payload = [
+            'pix_copia_e_cola' => $createBilling['pixCopiaECola'],
+            'value_total' => $priceTotal,
+            'sortition_id' => $sortitionId,
+            'expired_at' => 900,
+            'body' => $body
+        ];
+
+        Redis::setex($key, 900, json_encode($payload));
+
+        return redirect()->route('sortition.payment', ['sale_id' => $sale->id]);
     }
 
     public function loadNumbers(Request $request)
@@ -163,5 +235,26 @@ class SortitionController extends Controller
         }
 
         return response()->json($sortition);
+    }
+
+    public function payment($saleId)
+    {
+        $key = 'sale:' . $saleId;
+        $getSessionPix = Redis::get($key);
+        $sessionPix = $getSessionPix ? json_decode($getSessionPix, true) : [];
+
+        if (!$sessionPix) {
+            return redirect()->route('sortition.show', ['slug' => $slug])->with('error', 'QR Code Pix não existe ou expirou.')->withInput();
+        }
+
+        $sortitionId = $sessionPix['sortition_id'];
+        $valueTotal = $sessionPix['value_total'];
+        $pixCopiaECola = $sessionPix['pix_copia_e_cola'];
+
+        return view('sortition/payment', [
+            'sortitionId' => $sortitionId,
+            'valueTotal' => $valueTotal,
+            'pixCopiaECola' => $pixCopiaECola,
+        ]);
     }
 }

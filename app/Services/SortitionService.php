@@ -38,10 +38,10 @@ class SortitionService extends Service
         }
     }
 
-    public function getOne(array $filter = [], $perPage = 10, array $columns = [])
+    public function getOne(array $filter = [], array $columns = [])
     {
         try {
-            $item = $this->sortitionRepository->getOne($filter, $perPage, $columns);
+            $item = $this->sortitionRepository->getOne($filter, $columns);
 
             if (!$columns) {
                 $item = SortitionDTO::fromModel($item);

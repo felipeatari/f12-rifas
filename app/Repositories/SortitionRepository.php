@@ -56,7 +56,7 @@ class SortitionRepository
         }
     }
 
-    public function getOne(array $filters = [], $perPage = 10, $columns = [])
+    public function getOne(array $filters = [], $columns = [])
     {
         try {
             $query = Sortition::query();

@@ -25,7 +25,7 @@ class EfiPixService extends Service
         $this->efiPay = new EfiPay($options);
     }
 
-    public function createBilling(array $body): array
+    public function createBilling(array $body): mixed
     {
         try {
             $txid = strtoupper(Str::random(26));

@@ -77,6 +77,7 @@
                 @csrf
                 <input type="hidden" name="sortition_id" value="{{ $sortition->id }}" id="sortition_id">
                 <input type="hidden" name="sortition_price" value="{{ $sortition->price }}" id="sortition_price">
+                <input type="hidden" name="sortition_slug" value="{{ $sortition->slug }}" id="sortition_slug">
                 <div id="numbers"></div>
 
                 <input type="text" name="name" id="name" value="{{ old('name') }}" placeholder="Nome"

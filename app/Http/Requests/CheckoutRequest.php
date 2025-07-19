@@ -23,7 +23,7 @@ class CheckoutRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'cpf' => ['required', 'string', 'size:11'],
+            'cpf' => ['required', 'string'],
             'whatsapp' => ['required', 'string', 'confirmed'],
         ];
     }

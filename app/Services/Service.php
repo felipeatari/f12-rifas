@@ -19,6 +19,7 @@ abstract class Service
             $this->message = $notFoundMessage;
         } else {
             $this->status = 'error';
+            $this->code = $exception->getCode();
             $this->code = httpStatusCodeError($exception->getCode());
             $this->message = $exception->getMessage();
         }
