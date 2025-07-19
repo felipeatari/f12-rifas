@@ -2,6 +2,7 @@
 <div class="w-full flex items-center flex-col">
     <div class="w-[200px] flex justify-start my-5">
         <a
+            href="#"
             {{-- href="{{ route('customer.index') }}" --}}
         >
             Voltar
