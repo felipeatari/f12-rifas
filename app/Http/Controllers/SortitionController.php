@@ -151,7 +151,6 @@ class SortitionController extends Controller
         ];
 
         $createBilling = $this->efiPixService->createBilling($body);
-        dd($createBilling);
 
         if ($this->efiPixService->status() === 'error') {
             return redirect()->back()->with('error', 'Falha ao gerar cobrança via Pix. Tente novamente.')->withInput();
